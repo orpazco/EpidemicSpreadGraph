@@ -3,4 +3,4 @@ project(EpidemicSpreadGraph)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(EpidemicSpreadGraph main.cpp)
+add_executable(EpidemicSpreadGraph src/main.cpp)
