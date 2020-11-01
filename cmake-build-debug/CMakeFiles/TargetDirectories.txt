@@ -1,0 +1,3 @@
+C:/Orpaz/Study/Projects/EpidemicSpreadGraph/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Orpaz/Study/Projects/EpidemicSpreadGraph/cmake-build-debug/CMakeFiles/EpidemicSpreadGraph.dir
+C:/Orpaz/Study/Projects/EpidemicSpreadGraph/cmake-build-debug/CMakeFiles/rebuild_cache.dir

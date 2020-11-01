@@ -8,23 +8,23 @@
 class Agent;
 
 enum TreeType{
-  Cycle,
-  MaxRank,
-  Root
+    Cycle,
+    MaxRank,
+    Root
 };
 
 class Session{
 public:
     Session(const std::string& path);
-    
+
     void simulate();
     void addAgent(const Agent& agent);
     void setGraph(const Graph& graph);
-    
+
     void enqueueInfected(int);
     int dequeueInfected();
-    TreeType getTreeType();
-    
+    TreeType getTreeType() const;
+
 private:
     Graph g;
     TreeType treeType;
