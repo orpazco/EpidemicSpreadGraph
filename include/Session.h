@@ -15,11 +15,11 @@ enum TreeType{
 
 class Session{
 public:
-    Session(const std::string& path);
+    Session(const std::string& path); // parse the json file, init graph, tree type and agents list
 
-    void simulate();
-    void addAgent(const Agent& agent);
-    void setGraph(const Graph& graph);
+    void simulate(); // start the game
+    void addAgent(const Agent& agent); // add agent to the list
+    void setGraph(const Graph& graph); // init the graph
 
     void enqueueInfected(int);
     int dequeueInfected();
@@ -29,6 +29,6 @@ private:
     Graph g;
     TreeType treeType;
     std::vector<Agent*> agents;
-}
+};
 
 #endif
