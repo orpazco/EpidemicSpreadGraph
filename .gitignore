@@ -32,4 +32,5 @@
 *.app
 
 cmake-build-debug/*
+CMakeLists.txt
 cmake-build-debug/CMakeFiles/EpidemicSpreadGraph.dir/*

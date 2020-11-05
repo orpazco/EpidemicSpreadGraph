@@ -8,11 +8,14 @@ class Session;
 class Tree{
 public:
     Tree(int rootLabel);
+    Tree(const Tree &tree);
     void addChild(const Tree& child);
-
+    void addChild(Tree* child);
 
     static Tree* createTree(const Session& session, int rootLabel);
     virtual int traceTree()=0;
+    virtual Tree* clone()=0;
+
 private:
     int node;
     std::vector<Tree*> children;
