@@ -1,15 +1,10 @@
-//
-// Created by Orpaz on 05/11/2020.
-//
-using namespace std;
-
 #include "../include/Tree.h"
+#include "../include/Session.h"
 
-//Tree
-//ctor
+// C'tor
 Tree::Tree(int rootLabel): node(rootLabel) {}
 
-//copy ctor
+// copy C'tor
 Tree::Tree(const Tree &other){
     node = other.node;
     for (int i = 0; i<other.children.size(); i++){
@@ -18,14 +13,26 @@ Tree::Tree(const Tree &other){
     };
 }
 
+// move C'tor
+Tree::Tree(const Tree&& other) {
+    node = other.node;
+    for (int i = 0; i<other.children.size(); i++){
+        children.push_back(other.children[i]);
+    };
+}
+
+// move assignment
+const Tree& Tree::operator=(Tree &&other) {
+    if (&other != this){
+        
+    }
+}
+
 //assignment
 //TODO - Tomer
 //destructor
 //TODO - Tomer
-//movecon
-//TODO - Orpaz
-//moveass
-//TODO - Orpaz
+
 
 void Tree::addChild(const Tree& child) {
     //TODO check
@@ -36,13 +43,17 @@ void Tree::addChild(Tree* child) {
     children.push_back(child);
 }
 
-//CreateTree
+// Create new tree in heap according to tree type
 Tree* Tree::createTree(const Session &session, int rootLabel) {
+    switch (session.getTreeType()) {
+        case Cycle:
+            return new CycleTree(rootLabel, session.getCycle());
+        case MaxRank:
+            return new MaxRankTree(rootLabel);
+        case Root:
+            return new RootTree(rootLabel);
+    };
 }
-
-//TODO - Orpaz
-
-
 
 //CT
 //TODO - Orpaz
