@@ -34,6 +34,7 @@ public:
     const Tree& operator=(Tree&& other);
 
     // getters
+    const std::vector<Tree*>& getChildren() const;
     const int& getNode() const{
         return this->node;
     }
@@ -46,6 +47,8 @@ private:
 class CycleTree: public Tree{
 public:
     CycleTree(int rootLabel, int currCycle);
+    int getCurrCycle() const;
+    int traceTree(int counter);
     virtual int traceTree();
     virtual Tree* clone();
 private:
