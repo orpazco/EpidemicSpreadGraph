@@ -54,11 +54,12 @@ public:
     const CycleTree& operator=(CycleTree&& other);
 
     int getCurrCycle() const;
-    int traceTree(int counter);
     virtual int traceTree();
     virtual Tree* clone();
+
 private:
     int currCycle;
+    int traceTree(int counter);
 };
 
 class MaxRankTree: public Tree{
