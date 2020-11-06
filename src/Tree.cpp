@@ -28,26 +28,15 @@ Tree& Tree::operator=(const Tree &other) {
         return *this;
     clear();
     node=other.node;
-    children = {};
+    children.clear();
     copyChildren(other);
     return *this;
 }
-
-
 
 //destructor
 void Tree::clear(){
     for(int i=0;i<children.size(); i++)
         delete(children[i]);//deep child deletion
-}
-
-void Tree::deleteChild(int child) {
-    for(int i=0;i<children.size(); i++){
-        if(getChildren()[i]->getNode()==child){
-            delete getChildren()[i];//deep child deletion
-            children.erase(getChildren().begin()+i); //TODO - check about getter
-        }
-    }
 }
 
 Tree::~Tree(){
@@ -98,15 +87,13 @@ MaxRankTree::MaxRankTree(int rootLabel): Tree(rootLabel) {}
 
 //trace
 int MaxRankTree::traceTree() {
-
+    std::vector<Tree*> nodes;
+    (findMaxRank(0,0,0, nodes));
+    return findLeftChild(nodes)->getNode();
 }
 
-Tree* MaxRankTree::findMaxRank(){
-    (findMaxRank(0,0,0));
-    return findLeftChild(nodes);
-}
 
-void MaxRankTree::findMaxRank(int currMax, int currMaxDepth , int depth)  {
+void MaxRankTree::findMaxRank(int currMax, int currMaxDepth , int depth, std::vector<Tree*> nodes)  {
     int currRank = getChildren().size();
     if (currRank>=currMax){
         if(currRank>currMax || depth<currMaxDepth){
@@ -118,7 +105,7 @@ void MaxRankTree::findMaxRank(int currMax, int currMaxDepth , int depth)  {
             nodes.push_back(this);
     }
     for(int i=0; i<getChildren().size(); i++) {
-        findMaxRank(currMax, currMaxDepth, depth+1);
+        findMaxRank(currMax, currMaxDepth, depth+1, nodes);
     }
 }
 
@@ -127,8 +114,6 @@ Tree* MaxRankTree::clone() const {
     MaxRankTree* clone = new MaxRankTree(*this);
     return clone;
 }
-
-//TODO - Tomer
 
 
 //RT

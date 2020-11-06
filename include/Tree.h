@@ -19,8 +19,6 @@ public:
     static  Tree* findLeftChild(const vector<Tree*> &children);
     //dstrctr
     virtual ~Tree();
-    void clear();
-    void deleteChild(int child);
     //assign op
     Tree& operator=(const Tree& other);
     //getters
@@ -37,6 +35,7 @@ private:
 
 protected:
     void copyChildren(const Tree &other);
+    void clear();
 };
 
 class CycleTree: public Tree{
@@ -51,12 +50,10 @@ class MaxRankTree: public Tree{
 public:
     MaxRankTree(int rootLabel);
     virtual int traceTree();
-    virtual Tree* clone() const;
-    Tree* findMaxRank();
 
 private:
-    void findMaxRank(int currMax, int currMaxDepth, int depth) ;
-    std::vector<Tree*> nodes;
+    virtual Tree* clone() const;
+    void findMaxRank(int currMax, int currMaxDepth, int depth, std::vector<Tree*> nodes) ;
 };
 
 class RootTree: public Tree{
