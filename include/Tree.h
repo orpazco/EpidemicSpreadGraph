@@ -10,28 +10,33 @@ public:
     //ctor
     Tree(int rootLabel);
     //copy ctor
-    virtual Tree* clone()=0;
+    virtual Tree* clone() const=0;
     Tree(const Tree &tree);
-    void copyChildren(const Tree &other);
     //adders
     void addChild(const Tree &child);
     void addChild(Tree* child);
     static Tree* createTree(const Session& session, int rootLabel);
-    virtual int traceTree()=0;
+    static  Tree* findLeftChild(const vector<Tree*> &children);
     //dstrctr
     virtual ~Tree();
     void clear();
-    void deleteChild(Tree* child);
+    void deleteChild(int child);
     //assign op
     Tree& operator=(const Tree& other);
     //getters
-    const int& getNode() const{
-        return this->node;
-    }
+    const int& getNode() const ;
+    const std::vector<Tree*>& getChildren() const;
+    //trace
+    virtual int traceTree()=0;
+
+
 
 private:
     int node;
     std::vector<Tree*> children;
+
+protected:
+    void copyChildren(const Tree &other);
 };
 
 class CycleTree: public Tree{
@@ -46,6 +51,12 @@ class MaxRankTree: public Tree{
 public:
     MaxRankTree(int rootLabel);
     virtual int traceTree();
+    virtual Tree* clone() const;
+    Tree* findMaxRank();
+
+private:
+    void findMaxRank(int currMax, int currMaxDepth, int depth) ;
+    std::vector<Tree*> nodes;
 };
 
 class RootTree: public Tree{
@@ -53,7 +64,8 @@ public:
     //ctr
     RootTree(int rootLabel);
     //copy ctr
-    Tree* clone();
+    virtual Tree* clone() const;
+    //trace
     virtual int traceTree();
 };
 
