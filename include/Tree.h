@@ -15,10 +15,11 @@ public:
     Tree(const Tree &tree);
     void copyChildren(const Tree &other);
     // move copy
-    Tree(const Tree&& other);
+    Tree(Tree&& other);
 
     //adders
     void addChild(const Tree &child);
+    static Tree* findLeftChild(const std::vector<Tree*> &children);
 
     void addChild(Tree* child);
     static Tree* createTree(const Session& session, int rootLabel);
@@ -42,11 +43,16 @@ public:
 private:
     int node;
     std::vector<Tree*> children;
+    void moveChildren(Tree& other);
 };
 
 class CycleTree: public Tree{
 public:
     CycleTree(int rootLabel, int currCycle);
+    CycleTree(const CycleTree &other);
+    CycleTree& operator=(const CycleTree& other);
+    const CycleTree& operator=(CycleTree&& other);
+
     int getCurrCycle() const;
     int traceTree(int counter);
     virtual int traceTree();

@@ -14,24 +14,29 @@ Tree::Tree(const Tree &other){
 }
 
 // move C'tor
-Tree::Tree(const Tree&& other) {
+Tree::Tree(Tree&& other) {
     node = other.node;
-    for (int i = 0; i<other.children.size(); i++){
-        children.push_back(other.children[i]);
-    };
+    moveChildren(other);
 }
 
 // move assignment
 const Tree & Tree::operator=(Tree &&other) {
     if (&other != this){
         clear();
+        children.clear();
         node = other.node;
-        for (int i=0; i < other.children.size(); i++){
-            children.push_back(other.children[i]);
-            other.children[i] = nullptr;
-        }
+        moveChildren(other);
     }
     return *this;
+}
+
+// copy the pointers of the children from other to this children vector
+// used in move constructor and move assign
+void Tree::moveChildren(Tree &other) {
+    for (int i=0; i < other.children.size(); i++){
+        children.push_back(other.children[i]);
+        other.children[i] = nullptr;
+    }
 }
 
 //assignment
@@ -61,8 +66,39 @@ Tree* Tree::createTree(const Session &session, int rootLabel) {
     };
 }
 
+// get the most left child
+Tree * Tree::findLeftChild(const std::vector<Tree*> &children) {
+    // init left node
+    int leftNode = children[0]->getNode();
+    Tree* leftChild = children[0];
+    // go through all the children and find the node with the min root node value
+    for (int i = 1; i < children.size(); i++) {
+        int node = children[i]->getNode();
+        if (node < leftNode){
+            leftChild = children[i];
+        }
+    }
+    return leftChild;
+}
+
 // Cycle Tree
 CycleTree::CycleTree(int rootLabel, int currCycle) : Tree(rootLabel), currCycle(currCycle){}
+
+CycleTree::CycleTree(const CycleTree &other): Tree(other) {
+    currCycle = other.getCurrCycle();
+}
+
+CycleTree & CycleTree::operator=(const CycleTree &other) {
+    currCycle = other.getCurrCycle();
+    Tree::operator=(other);
+    return *this;
+}
+
+const CycleTree & CycleTree::operator=(CycleTree &&other) {
+    currCycle = other.getCurrCycle();
+    Tree::operator=(other);
+    return *this;
+}
 
 int CycleTree::traceTree() {
     return traceTree(0);
@@ -73,23 +109,11 @@ int CycleTree::traceTree(int counter) {
     if (getChildren().empty()) {
         return getNode();
     }
-    else{
-        // get the most left child
-        std::vector<Tree*> children = getChildren();
-        // init left node
-        int leftNode = children[0]->getNode();
-        CycleTree* leftChild;
-        // go through all the children and find the node with the min root node value
-        for (int i = 0; i < children.size(); ++i) {
-            int node = children[i]->getNode();
-            if (node < leftNode){
-                leftChild = (CycleTree*)children[i];
-            }
-        }
-
-        // if we get to the curr cycle return the current left node
-        if (counter == getCurrCycle())
-            return getNode();
+    // if we get to the curr cycle return the current left node
+    if (counter == getCurrCycle())
+        return getNode();
+    else {
+        CycleTree* leftChild = (CycleTree*)findLeftChild(getChildren());
 
         // return the most left child of the sub-tree
         counter++;
@@ -102,11 +126,8 @@ int CycleTree::getCurrCycle() const {
 }
 
 Tree * CycleTree::clone() {
-    // create new cycle tree with the same node and currCycle
-    CycleTree *newTree = new CycleTree(getNode(), getCurrCycle());
-    // copy the tree children to the new tree
-    newTree->copyChildren(*this);
-    return newTree;
+    // create new cycle tree with the same node and currCycle (go to copy ctor)
+    return new CycleTree(*this);
 }
 
 
