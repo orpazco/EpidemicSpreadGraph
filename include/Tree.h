@@ -7,14 +7,27 @@ class Session;
 
 class Tree{
 public:
+    //ctor
     Tree(int rootLabel);
+    //copy ctor
+    virtual Tree* clone()=0;
     Tree(const Tree &tree);
-    void addChild(const Tree& child);
+    void copyChildren(const Tree &other);
+    //adders
+    void addChild(const Tree &child);
     void addChild(Tree* child);
-
     static Tree* createTree(const Session& session, int rootLabel);
     virtual int traceTree()=0;
-    virtual Tree* clone()=0;
+    //dstrctr
+    virtual ~Tree();
+    void clear();
+    void deleteChild(Tree* child);
+    //assign op
+    Tree& operator=(const Tree& other);
+    //getters
+    const int& getNode() const{
+        return this->node;
+    }
 
 private:
     int node;
@@ -37,7 +50,10 @@ public:
 
 class RootTree: public Tree{
 public:
+    //ctr
     RootTree(int rootLabel);
+    //copy ctr
+    Tree* clone();
     virtual int traceTree();
 };
 
