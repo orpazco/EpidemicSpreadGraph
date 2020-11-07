@@ -50,9 +50,9 @@ class MaxRankTree: public Tree{
 public:
     MaxRankTree(int rootLabel);
     virtual int traceTree();
+    virtual Tree* clone() const;
 
 private:
-    virtual Tree* clone() const;
     void findMaxRank(int currMax, int currMaxDepth, int depth, std::vector<Tree*> nodes) ;
 };
 
