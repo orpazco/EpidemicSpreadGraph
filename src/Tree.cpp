@@ -2,17 +2,11 @@
 #include "../include/Session.h"
 
 //Tree
+
 //ctor
 Tree::Tree(int rootLabel): node(rootLabel){}
 
 //copy ctor
-void Tree::copyChildren(const Tree &other){
-    for (int i = 0; i<other.children.size(); i++){
-        Tree* treeOther = other.getChildren()[i]->clone();
-        children.push_back(treeOther);
-    }
-}
-
 Tree::Tree(const Tree &other){
     node = other.node;//copies node and children
     copyChildren(other);
@@ -22,26 +16,6 @@ Tree::Tree(const Tree &other){
 Tree::Tree(Tree&& other) {
     node = other.node;
     moveChildren(other);
-}
-
-// move assignment
-const Tree & Tree::operator=(Tree &&other) {
-    if (&other != this){
-        clear();
-        children.clear();
-        node = other.node;
-        moveChildren(other);
-    }
-    return *this;
-}
-
-// copy the pointers of the children from other to this children vector
-// used in move constructor and move assign
-void Tree::moveChildren(Tree &other) {
-    for (int i=0; i < other.children.size(); i++){
-        children.push_back(other.children[i]);
-        other.children[i] = nullptr;
-    }
 }
 
 //assignment
@@ -55,10 +29,37 @@ Tree& Tree::operator=(const Tree &other) {
     return *this;
 }
 
+// move assignment
+const Tree & Tree::operator=(Tree &&other) {
+    if (&other != this){
+        clear();
+        children.clear();
+        node = other.node;
+        moveChildren(other);
+    }
+    return *this;
+}
+
 //destructor
 void Tree::clear(){
     for(int i=0;i<children.size(); i++)
         delete(children[i]);//deep child deletion
+}
+
+void Tree::copyChildren(const Tree &other){
+    for (int i = 0; i<other.children.size(); i++){
+        Tree* treeOther = other.getChildren()[i]->clone();
+        children.push_back(treeOther);
+    }
+}
+
+// copy the pointers of the children from other to this children vector
+// used in move constructor and move assign
+void Tree::moveChildren(Tree &other) {
+    for (int i=0; i < other.children.size(); i++){
+        children.push_back(other.children[i]);
+        other.children[i] = nullptr;
+    }
 }
 
 Tree::~Tree(){
@@ -67,19 +68,15 @@ Tree::~Tree(){
 
 
 // getters
+
 const int& Tree::getNode() const{
     return node;
 }
 
-const vector<Tree*>& Tree::getChildren() const {
+const std::vector<Tree*>& Tree::getChildren() const {
     return children;
 
 }
-
-//movecon
-//TODO - Orpaz
-//moveass
-//TODO - Orpaz
 
 void Tree::addChild(const Tree& child) {
     Tree* newTree = child.clone();
@@ -161,7 +158,7 @@ int CycleTree::getCurrCycle() const {
     return currCycle;
 }
 
-Tree * CycleTree::clone() {
+Tree * CycleTree::clone() const{
     // create new cycle tree with the same node and currCycle (go to copy ctor)
     return new CycleTree(*this);
 }
