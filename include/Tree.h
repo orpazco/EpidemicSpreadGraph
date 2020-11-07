@@ -56,7 +56,7 @@ public:
 
     int getCurrCycle() const;
     virtual int traceTree();
-    virtual Tree* clone();
+    virtual Tree* clone() const;
 
 private:
     int currCycle;

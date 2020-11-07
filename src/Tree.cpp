@@ -71,15 +71,10 @@ const int& Tree::getNode() const{
     return node;
 }
 
-const vector<Tree*>& Tree::getChildren() const {
+const std::vector<Tree*>& Tree::getChildren() const {
     return children;
 
 }
-
-//movecon
-//TODO - Orpaz
-//moveass
-//TODO - Orpaz
 
 void Tree::addChild(const Tree& child) {
     Tree* newTree = child.clone();
@@ -161,7 +156,7 @@ int CycleTree::getCurrCycle() const {
     return currCycle;
 }
 
-Tree * CycleTree::clone() {
+Tree * CycleTree::clone() const{
     // create new cycle tree with the same node and currCycle (go to copy ctor)
     return new CycleTree(*this);
 }
