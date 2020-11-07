@@ -1,16 +1,21 @@
 #include "../include/Tree.h"
 #include "../include/Session.h"
 
-// C'tor
-Tree::Tree(int rootLabel): node(rootLabel) {}
+//Tree
+//ctor
+Tree::Tree(int rootLabel): node(rootLabel){}
 
-// copy C'tor
-Tree::Tree(const Tree &other){
-    node = other.node;
+//copy ctor
+void Tree::copyChildren(const Tree &other){
     for (int i = 0; i<other.children.size(); i++){
-        Tree* treeOther = other.children[i]->clone();
+        Tree* treeOther = other.getChildren()[i]->clone();
         children.push_back(treeOther);
-    };
+    }
+}
+
+Tree::Tree(const Tree &other){
+    node = other.node;//copies node and children
+    copyChildren(other);
 }
 
 // move C'tor
@@ -40,14 +45,45 @@ void Tree::moveChildren(Tree &other) {
 }
 
 //assignment
-//TODO - Tomer
-//destructor
-//TODO - Tomer
+Tree& Tree::operator=(const Tree &other) {
+    if(this == &other)// checks for same obj assignment
+        return *this;
+    clear();
+    node=other.node;
+    children.clear();
+    copyChildren(other);
+    return *this;
+}
 
+//destructor
+void Tree::clear(){
+    for(int i=0;i<children.size(); i++)
+        delete(children[i]);//deep child deletion
+}
+
+Tree::~Tree(){
+    clear();
+}
+
+
+// getters
+const int& Tree::getNode() const{
+    return node;
+}
+
+const vector<Tree*>& Tree::getChildren() const {
+    return children;
+
+}
+
+//movecon
+//TODO - Orpaz
+//moveass
+//TODO - Orpaz
 
 void Tree::addChild(const Tree& child) {
-    //TODO check
-    children.push_back((Tree*)&child);
+    Tree* newTree = child.clone();
+    children.push_back(newTree);
 }
 
 void Tree::addChild(Tree* child) {
@@ -132,8 +168,55 @@ Tree * CycleTree::clone() {
 
 
 //MRT
-//TODO - Tomer
+//ctor
+MaxRankTree::MaxRankTree(int rootLabel): Tree(rootLabel) {}
+
+//trace
+int MaxRankTree::traceTree() {
+    std::vector<Tree*> nodes; // nodes vector for storing MR candidates
+    findMaxRank(0,0,0, nodes);// gets candidates
+    return findLeftChild(nodes)->getNode();// returns the leftmost child in case of a tie
+}
+
+
+void MaxRankTree::findMaxRank(int currMax, int currMaxDepth , int depth, std::vector<Tree*> nodes)  {
+    int currRank = getChildren().size();
+    if (currRank>=currMax){
+        if(currRank>currMax || depth<currMaxDepth){
+            currMax = currRank;
+            currMaxDepth = depth;
+            nodes={this}; //candidate is largest or shallowest depth
+        }
+        else if (depth==currMaxDepth) //rank and depth equal
+            nodes.push_back(this);
+    }
+    for(int i=0; i<getChildren().size(); i++) {
+        findMaxRank(currMax, currMaxDepth, depth+1, nodes); //check children for candidates
+    }
+}
+
+//clone
+Tree* MaxRankTree::clone() const {
+    MaxRankTree* clone = new MaxRankTree(*this);
+    return clone;
+}
 
 
 //RT
-//TODO - Tomer
+
+//ctor
+RootTree::RootTree(int rootLabel): Tree(rootLabel) {
+}
+
+//copy ctor
+Tree* RootTree::clone() const{
+    RootTree* clone = new RootTree(*this);
+    return clone;
+}
+
+
+//trace
+int RootTree::traceTree() {
+    return getNode();
+}
+
