@@ -7,41 +7,57 @@ class Session;
 
 class Tree{
 public:
-    //ctor
+    // ctor
     Tree(int rootLabel);
     //copy ctor
     virtual Tree* clone() const=0;
     Tree(const Tree &tree);
+    // move copy
+    Tree(Tree&& other);
+
     //adders
     void addChild(const Tree &child);
+    static Tree* findLeftChild(const std::vector<Tree*> &children);
     void addChild(Tree* child);
     static Tree* createTree(const Session& session, int rootLabel);
-    static  Tree* findLeftChild(const vector<Tree*> &children);
+
     //dstrctr
     virtual ~Tree();
-    //assign op
-    Tree& operator=(const Tree& other);
+  
     //getters
     const int& getNode() const ;
     const std::vector<Tree*>& getChildren() const;
+  
     //trace
     virtual int traceTree()=0;
 
+    // assign op
+    Tree& operator=(const Tree& other);
+    const Tree& operator=(Tree&& other);
 
 
 private:
     int node;
     std::vector<Tree*> children;
+    void moveChildren(Tree& other);
 
 protected:
     void copyChildren(const Tree &other);
     void clear();
+    
 };
 
 class CycleTree: public Tree{
 public:
     CycleTree(int rootLabel, int currCycle);
+    CycleTree(const CycleTree &other);
+    CycleTree& operator=(const CycleTree& other);
+    const CycleTree& operator=(CycleTree&& other);
+
+    int getCurrCycle() const;
+    int traceTree(int counter);
     virtual int traceTree();
+    virtual Tree* clone();
 private:
     int currCycle;
 };
@@ -54,6 +70,7 @@ public:
 
 private:
     void findMaxRank(int currMax, int currMaxDepth, int depth, std::vector<Tree*> nodes) ;
+
 };
 
 class RootTree: public Tree{
@@ -64,6 +81,7 @@ public:
     virtual Tree* clone() const;
     //trace
     virtual int traceTree();
+    virtual Tree* clone();
 };
 
 #endif

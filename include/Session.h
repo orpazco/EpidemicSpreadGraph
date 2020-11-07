@@ -23,12 +23,14 @@ public:
 
     void enqueueInfected(int);
     int dequeueInfected();
+    int getCycle() const;
     TreeType getTreeType() const;
 
 private:
     Graph g;
     TreeType treeType;
     std::vector<Agent*> agents;
+    int cycle;
 };
 
 #endif
