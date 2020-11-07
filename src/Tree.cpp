@@ -87,9 +87,9 @@ MaxRankTree::MaxRankTree(int rootLabel): Tree(rootLabel) {}
 
 //trace
 int MaxRankTree::traceTree() {
-    std::vector<Tree*> nodes;
-    (findMaxRank(0,0,0, nodes));
-    return findLeftChild(nodes)->getNode();
+    std::vector<Tree*> nodes; // nodes vector for storing MR candidates
+    findMaxRank(0,0,0, nodes);// gets candidates
+    return findLeftChild(nodes)->getNode();// returns the leftmost child in case of a tie
 }
 
 
@@ -105,7 +105,7 @@ void MaxRankTree::findMaxRank(int currMax, int currMaxDepth , int depth, std::ve
             nodes.push_back(this);
     }
     for(int i=0; i<getChildren().size(); i++) {
-        findMaxRank(currMax, currMaxDepth, depth+1, nodes);
+        findMaxRank(currMax, currMaxDepth, depth+1, nodes); //check children for candidates
     }
 }
 
