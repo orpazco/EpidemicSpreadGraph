@@ -18,7 +18,7 @@ public:
     void T_copyCtor_multi_2(RootTree a);
     void T_copyChildren(RootTree a); // check if children are copied from this to other, and other children are unreachable by this
     void T_assignmentOp(RootTree a); // check if other is cloned into this
-    void T_moveCtor(RootTree a); // check if other is moved (and deleted) to this
+    void T_moveCtor(); // check if other is moved (and deleted) to this
     void T_moveAssignSame(RootTree a); //  supposed to do nothing
     void T_moveAssignDiff(RootTree a); //  check if other is moved (and deleted) to this
     void T_clear(RootTree a); // check if this is  deleted
