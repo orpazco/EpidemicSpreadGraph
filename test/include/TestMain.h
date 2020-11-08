@@ -8,10 +8,10 @@
 #include <string>
 #include <vector>
 
-class TestMain {
+static class TestMain {
 public:
-    void assert(bool isPass, const std::string& testName);
-    void assert(bool isPass, const std::string& testName, std::vector<std::string> errors);
+    static void assert(bool isPass, const std::string& testName);
+    static void assert(bool isPass, const std::string& testName, std::vector<std::string> errors);
 };
 
 
