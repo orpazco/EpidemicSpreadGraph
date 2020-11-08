@@ -1,22 +1,21 @@
 #include <fstream>
 #include <iostream>
 #include "../include/Session.h"
-#include "../include/json.hpp"
+
 
 // for convenience
 using json = nlohmann::json;
 
 Session::Session(const std::string &path) {
     std::ifstream input(path);
-    json j;
-    input >> j;
-    std::vector<std::vector<int>> matrix1=j["graph"];
-    jsonprintsection(matrix1);
-
+    input >> parsedJson;
+    addParsedAgents();
+    treeType = getTreeType();
+    //TODO finish
 }
 
-void  Session::jsonprintsection(std::vector<std::vector<int>> mat) {
-    std::cout << mat[1][1] ;
+void  Session::jsonprintsection(std::vector<std::string> mat) {
+    std::cout << mat[1];
 }
 
 void Session::simulate() {}
@@ -29,9 +28,25 @@ void Session::enqueueInfected(int) {}
 
 int Session::dequeueInfected() {}
 
-int Session::getCycle() const {}
+int Session::getCycle() const {
+}
 
-TreeType Session::getTreeType() const {}
+TreeType Session::getTreeType() const {
+   std::string type =parsedJson["tree"].get<std::string>(); //TODO - handle json errors
+   if (type=="R") return Root;
+   if (type=="C") return Cycle;
+   if (type=="M") return MaxRank;
+}
 
-void jsonPrint();
-void jsonOutput();
+
+void Session::addParsedAgents() {
+    json& agents = parsedJson["agents"];
+    for (int i = 0; i < agents.size(); ++i) { // iterate over agents section
+        if(agents[i][0]=="V")
+            addAgent(*(new Virus(agents[i][1]))); // create a new virus using the entry
+        else if(agents[i][0]=="C")
+            addAgent(*(new ContactTracer())); // create a new CT
+    }
+}
+void Session::jsonOutput() {}
+void Session::jsonPrint() {}

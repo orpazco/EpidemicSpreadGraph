@@ -96,6 +96,8 @@ Tree* Tree::createTree(const Session &session, int rootLabel) {
             return new MaxRankTree(rootLabel);
         case Root:
             return new RootTree(rootLabel);
+        default:
+            return nullptr;
     };
 }
 

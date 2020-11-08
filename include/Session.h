@@ -6,9 +6,11 @@
 
 // for convenience
 using json = nlohmann::json;
+using namespace std;
 #include <vector>
 #include <string>
 #include "Graph.h"
+#include "Agent.h"
 
 class Agent;
 
@@ -36,10 +38,12 @@ private:
     TreeType treeType;
     std::vector<Agent*> agents;
     int cycle;
-    void jsonPrint();
-    void jsonprintsection(std::vector<std::vector<int>> mat); //TODO DELETEME
-
+    json parsedJson;
+    void jsonPrint(); //TODO DELETEME
+    void jsonprintsection(vector<string> mat); //TODO DELETEME
     void jsonOutput();
+    void addParsedAgents();
+    void initGraph(vector<vector<int>>);
 };
 
 #endif
