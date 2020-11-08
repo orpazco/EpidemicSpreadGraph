@@ -6,5 +6,9 @@
       <file path="$PROJECT_DIR$/src" />
       <file path="$PROJECT_DIR$/test/src" />
     </sourceRoots>
+    <excludeRoots>
+      <file path="$PROJECT_DIR$/Google_tests" />
+      <file path="$PROJECT_DIR$/Tests" />
+    </excludeRoots>
   </component>
 </project>
