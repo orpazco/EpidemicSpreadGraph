@@ -34,3 +34,4 @@
 cmake-build-debug/*
 CMakeLists.txt
 Tests
+.idea/*
