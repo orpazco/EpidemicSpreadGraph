@@ -82,7 +82,6 @@ public:
     virtual Tree* clone() const;
     //trace
     virtual int traceTree();
-    virtual Tree* clone();
 };
 
 #endif

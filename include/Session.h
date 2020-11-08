@@ -1,6 +1,11 @@
 #ifndef SESSION_H_
 #define SESSION_H_
 
+
+#include "../include/json.hpp"
+
+// for convenience
+using json = nlohmann::json;
 #include <vector>
 #include <string>
 #include "Graph.h"
@@ -31,6 +36,10 @@ private:
     TreeType treeType;
     std::vector<Agent*> agents;
     int cycle;
+    void jsonPrint();
+    void jsonprintsection(std::vector<std::vector<int>> mat); //TODO DELETEME
+
+    void jsonOutput();
 };
 
 #endif
