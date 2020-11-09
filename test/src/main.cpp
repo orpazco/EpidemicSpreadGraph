@@ -5,8 +5,7 @@
 #include "../include/TreeTests.h"
 
 int main(int argc, char** argv){
-    TestMain::start();
-
+    
     // run tests
     TreeTests T;
 

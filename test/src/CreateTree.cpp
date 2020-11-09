@@ -3,60 +3,46 @@
 //
 
 #include "../include/CreateTree.h"
-#include "../../include/Tree.h"
 
-Tree * CreateTree::createTreeNoChild(TreeType type, int root) {
-    return createTree(type, root);
+Tree * CreateTree::createTreeNoChild(TreeType type, int root, int currCycle) {
+    return createTree(type, root, currCycle);
 }
 
-Tree * CreateTree::createTreeOneChild(TreeType type, int root) {
-    Tree* tree = createTree(type, root);
-    Tree* tree1 = createTree(type, root+1);
+Tree * CreateTree::createTreeOneChild(TreeType type, int root, int currCycle) {
+    Tree* tree = createTree(type, root, currCycle);
+    Tree* tree1 = createTree(type, root+1, currCycle);
     tree->addChild(tree1);
     return tree;
 }
 
-Tree * CreateTree::createTreeMultiChild(TreeType type, int numChild) {
-    Tree* tree = createTree(type, 0);
-    for (int i = 1; i <= numChild; i++) {
-        Tree* child = createTree(type, i);
+Tree * CreateTree::createTreeMultiChild(TreeType type, int numChild, int root) {
+    return CreateTree::createTreeMultiChild(type, numChild, root, 0);
+}
+
+Tree * CreateTree::createTreeMultiChild(TreeType type, int numChild, int root, int currCycle) {
+    Tree* tree = createTree(type, root, currCycle);
+    for (int i = root+1; i <= root+numChild; i++) {
+        Tree* child = createTree(type, i, currCycle);
         tree->addChild(child);
     }
     return tree;
 }
 
-Tree * CreateTree::createTree(TreeType type, int depth, int numNodesLayer) {
-    Tree* tree = createTree(type, 0);
-    addLayer(tree, type, numNodesLayer, depth-1);
-    return tree;
-}
 
-void CreateTree::addLayer(Tree *tree, TreeType type, int numChild, int depth) {
-    for (int i = 1; i < numChild; ++i) {
-        Tree* child = createTree(type, i);
-        CreateTree::addLayer(child, type, numChild, depth--);
-        tree->addChild(child);
-    }
-}
-
-void CreateTree::addChild(Tree *tree, TreeType type, int numChild, int startNode) {
+void CreateTree::addChild(Tree *tree, TreeType type, int numChild, int startNode, int currCycle) {
     for (int i = startNode; i < startNode+numChild; i++) {
-        Tree* child = createTree(type, i);
+        Tree* child = createTree(type, i, currCycle);
         tree->addChild(child);
     }
 }
 
-Tree * CreateTree::createTree(TreeType type, int root) {
+Tree * CreateTree::createTree(TreeType type, int root, int currCycle) {
     switch (type) {
         case Cycle:
-            return new CycleTree(root, 0);
+            return new CycleTree(root, currCycle);
         case MaxRank:
             return new MaxRankTree(root);
         case Root:
             return new RootTree(root);
     }
-}
-
-Tree * CreateTree::createTree(int root, int cycle) {
-    return new CycleTree(root, cycle);
 }

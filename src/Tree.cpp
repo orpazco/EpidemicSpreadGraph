@@ -78,6 +78,10 @@ const std::vector<Tree*>& Tree::getChildren() const {
 
 }
 
+int Tree::getChildrenSize() const {
+    return children.size();
+}
+
 void Tree::addChild(const Tree& child) {
     Tree* newTree = child.clone();
     children.push_back(newTree);

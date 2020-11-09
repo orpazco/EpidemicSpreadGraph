@@ -5,9 +5,7 @@
 #include <iostream>
 #include "../include/TestMain.h"
 
-void TestMain::start() {
-    errCounter = 0;
-}
+int TestMain::errCounter = 0;
 
 void TestMain::assert(bool isPass, const std::string& testName) {
     assert(isPass, testName, {});
