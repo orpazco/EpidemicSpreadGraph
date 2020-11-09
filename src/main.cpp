@@ -13,6 +13,7 @@ using namespace std;
 ////    sess.simulate();
 ////    CycleTree A(0);
 ////    cout << A;
+////    Session s("../jsons/examples/config1.json");
 //    return 0;
 //
 //}
