@@ -25,5 +25,5 @@ void TestMain::assert(bool isPass, const std::string &testName, const std::vecto
 }
 
 void TestMain::finish() {
-    std::cout << "finish all tests. \ntotal numbers of errors: " << errCounter;
+    std::cout << "finish all tests. \n ===========================>>> total numbers of errors: [" << errCounter << "] <<<===========================";
 }

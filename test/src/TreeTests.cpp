@@ -16,6 +16,7 @@ void TreeTests::startTests() {
     T_moveCtor();
     CT_traceTree();
     CT_traceLessThanChildrenAmount();
+    T_findLeftChild();
 }
 
 // TODO: not finish (tomer)
@@ -53,13 +54,44 @@ void TreeTests::T_moveCtor() {
     TestMain::assert(isPass, __FUNCTION__ , errors);
 }
 
-//TODO: orpaz
+// region orpaz tests
 void TreeTests::T_moveCtorMultChild() {}
 void TreeTests::T_moveAssignSame() {}
 void TreeTests::T_moveAssignDiff() {}
-
 void TreeTests::T_moveChildren() {}
-void TreeTests::T_findLeftChild() {}
+
+void TreeTests::T_findLeftChild() {
+    bool isPass= true;
+    std::vector<std::string> errors;
+    Tree* tree1 = CreateTree::createTreeMultiChild(Cycle, 6, 2, 10);
+    std::vector<Tree *> children1 =  tree1->getChildren();
+    for (int i = 0; i < tree1->getChildrenSize(); i++) {
+        CreateTree::addChild(children1[i], TreeType::Cycle, 2, (i+1)*10, 10);
+    }
+
+    Tree* tree2 = CreateTree::createTreeMultiChild(Cycle, 1, 1, 10);
+    std::vector<Tree *> children2 =  tree2->getChildren();
+    Tree* curr = children2[0];
+    for (int i = 0; i < 5; ++i) {
+        CreateTree::addChild(curr, Cycle, 1, i+3, 10);
+        children2 =  curr->getChildren();
+        curr = children2[0];
+    }
+
+    int left1 = tree1->traceTree();
+    int left2 = tree2->traceTree();
+
+    if (left1 != 10){
+        isPass=false;
+        errors.push_back("Expected left: 30, actual left: " + std::to_string(left1));
+    }
+    if (left2 != 7){
+        isPass=false;
+        errors.push_back("Expected left: 7, actual left: " + std::to_string(left2));
+    }
+    TestMain::assert(isPass, __FUNCTION__ , errors);
+
+}
 
 void TreeTests::CT_traceTree() {
     bool isPass= true;
@@ -102,7 +134,9 @@ void TreeTests::CT_traceLessThanChildrenAmount() {
     }
     TestMain::assert(isPass, __FUNCTION__ , errors);
 }
+// endregion
 
+// region help methods
 bool TreeTests::compare(Tree *actual, Tree *expected, std::vector<std::string> &errors) {
     bool isPass=true;
     if (expected->getNode() != actual->getNode()){
@@ -119,3 +153,4 @@ bool TreeTests::compare(Tree *actual, Tree *expected, std::vector<std::string> &
 std::vector<std::string> TreeTests::childrenEqual(Tree *a, Tree *b) {
     return {};
 }
+// endregion
