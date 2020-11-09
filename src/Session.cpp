@@ -1,10 +1,8 @@
 #include <fstream>
 #include <iostream>
 #include "../include/Session.h"
+#include "../include/Agent.h"
 
-
-using json = nlohmann::json;
-using namespace std;
 
 Session::Session(const std::string &path) : cycle(0) {
     std::ifstream input(path);

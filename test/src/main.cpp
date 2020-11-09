@@ -5,7 +5,7 @@
 #include "../include/TreeTests.h"
 
 int main(int argc, char** argv){
-    
+
     // run tests
     TreeTests T;
 

@@ -1,17 +1,14 @@
 #ifndef SESSION_H_
 #define SESSION_H_
 
-
-#include "../include/json.hpp"
-
-using json = nlohmann::json;
-using namespace std;
-
 #include <vector>
 #include <string>
 #include <deque>
 #include "Graph.h"
-#include "Agent.h"
+#include "../include/json.hpp"
+
+using json = nlohmann::json;
+using namespace std;
 
 class Agent;
 
