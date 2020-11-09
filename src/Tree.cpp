@@ -48,8 +48,9 @@ void Tree::clear(){
 
 void Tree::copyChildren(const Tree &other){
     for (int i = 0; i<other.children.size(); i++){
-        Tree* treeOther = other.getChildren()[i]->clone();
-        children.push_back(treeOther);
+//        Tree* treeOther = other.getChildren()[i]->clone();
+//        children.push_back(treeOther); //TODO test this before deleting
+          addChild(*other.getChildren()[i]);
     }
 }
 
