@@ -15,16 +15,14 @@ enum TreeType{
 
 class CreateTree {
 public:
-    static Tree* createTreeNoChild(TreeType type, int root);
-    static Tree* createTreeOneChild(TreeType type, int root);
-    static Tree* createTreeMultiChild(TreeType type, int numChild);
-    static Tree* createTree(TreeType type, int depth, int numNodesLayer);
-    static void addLayer(Tree* tree, TreeType type, int numChild, int depth);
-    static void addChild(Tree* tree, TreeType type, int numChild, int startNode);
+    static Tree* createTreeNoChild(TreeType type, int root, int currCycle);
+    static Tree* createTreeOneChild(TreeType type, int root, int currCycle);
+    static Tree* createTreeMultiChild(TreeType type, int numChild, int root);
+    static Tree* createTreeMultiChild(TreeType type, int numChild, int root, int currCycle);
+    static void addChild(Tree* tree, TreeType type, int numChild, int startNode, int currCycle);
 
 private:
-    static Tree* createTree(TreeType type, int root);
-    static Tree* createTree(int root, int cycle);
+    static Tree* createTree(TreeType type,int root, int cycle);
 };
 
 

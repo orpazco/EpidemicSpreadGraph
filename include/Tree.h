@@ -27,6 +27,7 @@ public:
     //getters
     const int& getNode() const ;
     const std::vector<Tree*>& getChildren() const;
+    int getChildrenSize() const;
   
     //trace
     virtual int traceTree()=0;
