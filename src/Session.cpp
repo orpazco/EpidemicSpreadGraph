@@ -5,7 +5,7 @@
 
 Session::Session() {}
 
-Session::Session(const std::string &path) : cycle(0) {
+Session::Session(const std::string &path) : cycle(0), notTerminated(true) {
     std::ifstream input(path);
     input >> parsedJson;
     addParsedAgents();
@@ -15,7 +15,20 @@ Session::Session(const std::string &path) : cycle(0) {
 }
 
 void Session::simulate() {
+    cycle = 0;
+    while (notTerminated){
+        // get agents list size so the for will loop on the current agents
+        int agentsSize = getAgents().size();
+        for (int i = 0; i < agentsSize; i++) {
+            // activate each agent
+            getAgents()[i]->act(*this);
+        }
+        cycle++;
+    }
+}
 
+void Session::virusIsAct() {
+    notTerminated = true;
 }
 
 void Session::addAgent(const Agent &agent) {

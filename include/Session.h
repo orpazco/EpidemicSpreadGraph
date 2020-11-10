@@ -31,8 +31,9 @@ public:
 
     void enqueueInfected(int);
     int dequeueInfected();
-    int getCycle() const;
 
+    void virusIsAct();
+    int getCycle() const;
     TreeType getTreeType() const;
     const std::vector<Agent*> getAgents() const;
 
@@ -43,6 +44,7 @@ private:
     int cycle;
     json parsedJson;
     deque<int> infectionQueue;
+    bool notTerminated;
 public:
 
 private:
