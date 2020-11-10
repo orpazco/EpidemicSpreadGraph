@@ -12,10 +12,12 @@ TreeTests::TreeTests(): RT_1(1), RT_2(2), RT_3(3) {
 }
 
 void TreeTests::startTests() {
-    T_copyCtor_single();
-    T_moveCtor();
-    CT_traceTree();
-    CT_traceLessThanChildrenAmount();
+//    T_copyCtor_single();
+//    T_moveCtor();
+//    CT_traceTree();
+//    CT_traceLessThanChildrenAmount();
+    MRT_traceSameDepth();
+    MRT_traceLesserDepth();
 }
 
 // TODO: not finish (tomer)
@@ -102,6 +104,54 @@ void TreeTests::CT_traceLessThanChildrenAmount() {
     }
     TestMain::assert(isPass, __FUNCTION__ , errors);
 }
+
+void TreeTests::MRT_traceTree(int shallowChildren, int deepChildren, int depth) {
+    bool isPass=true;
+    std::vector<std::string> errors;
+    int root = 0;
+    int& children = shallowChildren;
+    int& dChildren = deepChildren;
+    int expected;
+    switch (depth) {
+        case 0:{ expected = 0;
+            break;}
+        default:expected = root+children+1;
+    }
+    Tree* currTree = CreateTree::createTreeMultiChild(MaxRank, children, root);
+    CreateTree::addChildInDepth(currTree, MaxRank, dChildren, root+children+1, depth);
+    int trace = currTree->traceTree();
+    if (trace != expected){
+        isPass=false;
+        errors.push_back("Expected trace:"+  std::to_string(expected)+ ", actual trace: " + std::to_string(trace));
+    }
+    TestMain::assert(isPass, __FUNCTION__ , errors);
+}
+
+void TreeTests::MRT_traceLesserDepth() {
+    bool isPass=true;
+    std::vector<std::string> errors;
+    int root = 0;
+    int children = 2;
+    int dChildren = 5;
+    Tree* currTree = CreateTree::createTreeMultiChild(MaxRank, children, root);
+    CreateTree::addChildInDepth(currTree, MaxRank, dChildren, root+children+1, 1);
+    CreateTree::addChildInDepth(currTree, MaxRank, dChildren, root+children+1+dChildren, 2);
+    int trace = currTree->traceTree();
+    if (trace != root+children+1){
+        isPass=false;
+        errors.push_back("Expected trace:"+  std::to_string(root+children+1)+ ", actual trace: " + std::to_string(trace));
+    }
+    TestMain::assert(isPass, __FUNCTION__ , errors);
+}
+
+
+
+void TreeTests::MRT_traceSameDepth() {
+    TreeTests::MRT_traceTree(3,3,0);
+}
+
+
+
 
 bool TreeTests::compare(Tree *actual, Tree *expected, std::vector<std::string> &errors) {
     bool isPass=true;

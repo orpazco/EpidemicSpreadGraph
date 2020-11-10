@@ -2,6 +2,7 @@
 #define TREE_H_
 
 #include <vector>
+#include <memory>
 
 class Session;
 
@@ -71,7 +72,7 @@ public:
     virtual Tree* clone() const;
 
 private:
-    void findMaxRank(int currMax, int currMaxDepth, int depth, std::vector<Tree*> nodes) ;
+    void findMaxRank(int* currMax, int* currMaxDepth, int depth, std::vector<Tree*>* nodes) ;
 
 };
 

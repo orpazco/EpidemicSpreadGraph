@@ -7,6 +7,7 @@
 #include  "../../include/Tree.h"
 #include "../include/TestMain.h"
 #include <string>
+#include <memory>
 
 
 class TreeTests {
@@ -36,7 +37,9 @@ public:
     void T_findLeftChild();
     void CT_traceTree();
     void CT_traceLessThanChildrenAmount();
-    void MRT_traceTree();
+    void MRT_traceTree(int shallowChildren, int deepChildren, int depth);
+    void MRT_traceSameDepth();
+    void MRT_traceLesserDepth();
 
 private:
     RootTree RT_1;
