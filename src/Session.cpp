@@ -96,4 +96,8 @@ void Session::jsonOutput() {
     outpath << output;
 }
 
+void Session::isolateNode(int &node){
+    g.isolateNode(node);
+}
+
 void Session::jsonPrint() {}
