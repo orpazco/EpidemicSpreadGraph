@@ -61,7 +61,7 @@ public:
 
 private:
     int currCycle;
-    int traceTree(int counter);
+    int traceTree(int &counter);
 };
 
 class MaxRankTree: public Tree{
