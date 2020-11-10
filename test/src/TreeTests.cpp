@@ -37,7 +37,7 @@ void TreeTests::T_copyCtor_single() {
     for (int i = 0; i < childrenDiff.size(); ++i) {
         errors.push_back(childrenDiff[i]);
     }
-    TestMain::assert(isPass, testName, errors);
+    TestMain::assert1(isPass, testName, errors);
 }
 
 // orpaz
@@ -51,7 +51,7 @@ void TreeTests::T_moveCtor() {
         errors.push_back("Expected children list: 0, actual children list size is: " + std::to_string(actual->getChildren().size()));
     }
     isPass = compare(actual, expected, errors);
-    TestMain::assert(isPass, __FUNCTION__ , errors);
+    TestMain::assert1(isPass, __FUNCTION__, errors);
 }
 
 // region orpaz tests
@@ -89,7 +89,7 @@ void TreeTests::T_findLeftChild() {
         isPass=false;
         errors.push_back("Expected left: 7, actual left: " + std::to_string(left2));
     }
-    TestMain::assert(isPass, __FUNCTION__ , errors);
+    TestMain::assert1(isPass, __FUNCTION__, errors);
 
 }
 
@@ -109,7 +109,7 @@ void TreeTests::CT_traceTree() {
         isPass=false;
         errors.push_back("Expected trace: 10, actual trace: " + std::to_string(trace));
     }
-    TestMain::assert(isPass, __FUNCTION__ , errors);
+    TestMain::assert1(isPass, __FUNCTION__, errors);
 }
 
 void TreeTests::CT_traceLessThanChildrenAmount() {
@@ -132,7 +132,7 @@ void TreeTests::CT_traceLessThanChildrenAmount() {
         isPass=false;
         errors.push_back("Expected trace: 2, actual trace: " + std::to_string(trace));
     }
-    TestMain::assert(isPass, __FUNCTION__ , errors);
+    TestMain::assert1(isPass, __FUNCTION__, errors);
 }
 // endregion
 

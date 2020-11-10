@@ -8,10 +8,10 @@
 int TestMain::errCounter = 0;
 
 void TestMain::assert(bool isPass, const std::string& testName) {
-    assert(isPass, testName, {});
+    assert1(isPass, testName, {});
 }
 
-void TestMain::assert(bool isPass, const std::string &testName, const std::vector<std::string>& errors) {
+void TestMain::assert1(bool isPass, const std::string &testName, const std::vector<std::string>& errors) {
     if (isPass)
         std::cout << "Test " << testName << " Pass" << std::endl;
     else {
