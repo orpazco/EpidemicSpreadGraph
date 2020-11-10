@@ -32,6 +32,8 @@ public:
     void enqueueInfected(int);
     int dequeueInfected();
 
+    void infectNode(int nodeInd);
+    int getLeftChildNotInf(const int nodeInd);
     void virusActed();
     int getCycle() const;
     TreeType getTreeType() const;

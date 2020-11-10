@@ -15,20 +15,30 @@ Session::Session(const std::string &path) : cycle(0), notTerminated(true) {
 }
 
 void Session::simulate() {
-    cycle = 0;
     while (notTerminated){
+        cycle++;
+        notTerminated = false;
         // get agents list size so the for will loop on the current agents
         int agentsSize = getAgents().size();
         for (int i = 0; i < agentsSize; i++) {
             // activate each agent
             getAgents()[i]->act(*this);
         }
-        cycle++;
     }
 }
 
 void Session::virusActed() {
     notTerminated = true;
+}
+
+// update the infected node in graph and add new virus to agent list
+void Session::infectNode(int nodeInd) {
+    g.infectNode(nodeInd);
+    addAgent(new Virus(nodeInd));
+}
+
+int Session::getLeftChildNotInf(const int nodeInd) {
+    return g.getLeftChildNotInf(nodeInd);
 }
 
 void Session::addAgent(const Agent &agent) {
