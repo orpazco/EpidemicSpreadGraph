@@ -28,13 +28,25 @@ Tree * CreateTree::createTreeMultiChild(TreeType type, int numChild, int root, i
     return tree;
 }
 
-
 void CreateTree::addChild(Tree *tree, TreeType type, int numChild, int startNode, int currCycle) {
     for (int i = startNode; i < startNode+numChild; i++) {
         Tree* child = createTree(type, i, currCycle);
         tree->addChild(child);
     }
 }
+
+
+void CreateTree::addChildInDepth(Tree *tree, TreeType type, int numChild, int startNode, int depth) {
+    for (int i = 0; i < depth ; ++i) {
+        CreateTree::addChild(tree, MaxRank, 1, startNode*(i+1), 0);
+        Tree *nextChild = tree->getChildren().back();
+        tree = nextChild;
+    }
+    CreateTree::addChild(tree, MaxRank, numChild, startNode*depth+1, 0);
+    }
+
+
+
 
 Tree * CreateTree::createTree(TreeType type, int root, int currCycle) {
     switch (type) {
