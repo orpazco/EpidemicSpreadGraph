@@ -3,6 +3,7 @@
 #include "../include/Session.h"
 #include "../include/Agent.h"
 
+Session::Session() {}
 
 Session::Session(const std::string &path) : cycle(0) {
     std::ifstream input(path);
@@ -13,31 +14,41 @@ Session::Session(const std::string &path) : cycle(0) {
     //TODO finish
 }
 
-void  Session::jsonprintsection(std::vector<std::string> mat) {
-    std::cout << mat[1];
+void Session::simulate() {
+
 }
 
-void Session::simulate() {}
-
 void Session::addAgent(const Agent &agent) {
-    //clone agent
+    //clone agent and add to agent list
+    Agent* newAgent = agent.clone();
+    agents.push_back(newAgent);
 }
 
 void Session::addAgent(Agent* agent) {
-    //add agent by pointer
+    agents.push_back(agent);
 }
 
 void Session::setGraph(const Graph &graph) {
     // clone graph
+    Graph* newGraph = graph.clone();
+    g = *newGraph;
 }
 
 void Session::setGraph(Graph* graph) {
     // set graph by pointer
+    g = *graph;
 }
 
-void Session::enqueueInfected(int) {}
+void Session::enqueueInfected(int nId) {
+    infectionQueue.push_back(nId);
+}
 
-int Session::dequeueInfected() {}
+int Session::dequeueInfected() {
+    if (!infectionQueue.empty()){
+        return infectionQueue.front();
+    }
+    return -1;
+}
 
 //getters
 
@@ -51,6 +62,10 @@ TreeType Session::getTreeType() const {
 
 const deque<int> &Session::getInfectionQueue() const {
     return infectionQueue;
+}
+
+const std::vector<Agent *> Session::getAgents() const {
+    return agents;
 }
 
 // setters
