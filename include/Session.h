@@ -50,6 +50,7 @@ private:
     void setParsedTreeType();
     void setTreeType(TreeType type);
     void initGraph();
+    void jsonInit(const std::string &path);
 };
 
 #endif
