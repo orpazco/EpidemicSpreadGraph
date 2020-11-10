@@ -32,7 +32,7 @@ public:
     void enqueueInfected(int);
     int dequeueInfected();
 
-    void virusIsAct();
+    void virusActed();
     int getCycle() const;
     TreeType getTreeType() const;
     const std::vector<Agent*> getAgents() const;

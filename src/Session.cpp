@@ -27,7 +27,7 @@ void Session::simulate() {
     }
 }
 
-void Session::virusIsAct() {
+void Session::virusActed() {
     notTerminated = true;
 }
 
