@@ -19,8 +19,10 @@ Virus::Virus(int nodeInd): nodeInd(nodeInd) {}
 
 void Virus::act(Session &session) {
 
-    // add current node to infected queue
-    session.enqueueInfected(getNodeInd());
+    // add current node to infected queue if this node wasnt enqueue already
+    if (!session.isInfected(getNodeInd())){
+        session.enqueueInfected(getNodeInd());
+    }
 
     // spread the virus to the left most child
     int leftChild = session.getLeftChildNotInf(getNodeInd());

@@ -37,6 +37,11 @@ void Session::infectNode(int nodeInd) {
     addAgent(new Virus(nodeInd));
 }
 
+// return is the given node is infected
+bool Session::isInfected(int nodeInd) {
+    return g.isInfected(nodeInd);
+}
+
 int Session::getLeftChildNotInf(const int nodeInd) {
     return g.getLeftChildNotInf(nodeInd);
 }

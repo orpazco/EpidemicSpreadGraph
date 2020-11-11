@@ -33,6 +33,7 @@ public:
     int dequeueInfected();
 
     void infectNode(int nodeInd);
+    bool isInfected(int nodeInd);
     int getLeftChildNotInf(const int nodeInd);
     void virusActed();
     int getCycle() const;
