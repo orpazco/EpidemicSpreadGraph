@@ -32,6 +32,8 @@ public:
     int dequeueInfected();
     int getCycle() const;
     TreeType getTreeType() const;
+    void isolateNode(int &node);
+
 
 private:
     Graph g;
@@ -50,6 +52,7 @@ private:
     void setParsedTreeType();
     void setTreeType(TreeType type);
     void initGraph();
+    void jsonInit(const std::string &path);
 };
 
 #endif

@@ -11,9 +11,11 @@ public:
 
     void infectNode(int nodeInd);
     bool isInfected(int nodeInd);
+    void isolateNode(int node);
     const std::vector<std::vector<int>> &getEdges() const;
 
 private:
+    void removeEdge(int sourceNode, int destinationNode);
     std::vector<std::vector<int>> edges;
 };
 
