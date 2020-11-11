@@ -141,10 +141,11 @@ const CycleTree & CycleTree::operator=(CycleTree &&other) {
 }
 
 int CycleTree::traceTree() {
-    return traceTree(0);
+    int counter = 0;
+    return traceTree(counter);
 }
 
-int CycleTree::traceTree(int counter) {
+int CycleTree::traceTree(int &counter) {
     // if there is no children return this
     if (getChildren().empty()) {
         return getNode();

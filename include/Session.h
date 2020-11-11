@@ -8,7 +8,6 @@
 #include "../include/json.hpp"
 
 using json = nlohmann::json;
-using namespace std;
 
 class Agent;
 
@@ -20,6 +19,7 @@ enum TreeType{
 
 class Session{
 public:
+    Session(); // TODO delete (for tests)
     Session(const std::string& path); // parse the json file, init graph, tree type and agents list
 
     void simulate(); // start the game
@@ -30,10 +30,15 @@ public:
 
     void enqueueInfected(int);
     int dequeueInfected();
+
+    void infectNode(int nodeInd);
+    bool isInfected(int nodeInd) const;
+    int getLeftChildNotInf(const int nodeInd) const;
+    void virusActed();
     int getCycle() const;
     TreeType getTreeType() const;
+    const std::vector<Agent*> & getAgents() const;
     void isolateNode(int &node);
-
 
 private:
     Graph g;
@@ -41,11 +46,12 @@ private:
     std::vector<Agent*> agents;
     int cycle;
     json parsedJson;
-    deque<int> infectionQueue;
+    std::deque<int> infectionQueue;
+    bool notTerminated;
 public:
 
 private:
-    const deque<int> &getInfectionQueue() const;    // TODO - review with orpaz
+    const std::deque<int> &getInfectionQueue() const;    // TODO - review with orpaz
     void jsonPrint(); //TODO DELETEME
     void jsonOutput();
     void addParsedAgents();

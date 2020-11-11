@@ -2,9 +2,11 @@
 #include <iostream>
 #include "../include/Session.h"
 #include "../include/Agent.h"
+using namespace std;
 
+Session::Session() {}
 
-Session::Session(const std::string &path) : cycle(0) {
+Session::Session(const std::string &path) : cycle(0), notTerminated(true) {
     jsonInit(path); // initializes config Json
     addParsedAgents(); // adds agents from the config
     setParsedTreeType(); // sets tree type according to config
@@ -12,28 +14,69 @@ Session::Session(const std::string &path) : cycle(0) {
     //TODO finish
 }
 
-void Session::simulate() {}
+void Session::simulate() {
+    while (notTerminated){
+        cycle++;
+        notTerminated = false;
+        // get agents list size so the for will loop on the current agents
+        int agentsSize = getAgents().size();
+        for (int i = 0; i < agentsSize; i++) {
+            // activate each agent
+            getAgents()[i]->act(*this);
+        }
+    }
+}
 
+void Session::virusActed() {
+    notTerminated = true;
+}
+
+// update the infected node in graph and add new virus to agent list
+void Session::infectNode(int nodeInd) {
+    g.infectNode(nodeInd);
+    addAgent(new Virus(nodeInd));
+}
+
+// return is the given node is infected
+bool Session::isInfected(int nodeInd) const {
+    return g.isInfected(nodeInd);
+}
+
+int Session::getLeftChildNotInf(int nodeInd) const {
+    return g.getLeftChildNotInf(nodeInd);
+}
 
 void Session::addAgent(const Agent &agent) {
-    //clone agent
+    //clone agent and add to agent list
+    Agent* newAgent = agent.clone();
+    agents.push_back(newAgent);
 }
 
 void Session::addAgent(Agent* agent) {
-    //add agent by pointer
+    agents.push_back(agent);
 }
 
 void Session::setGraph(const Graph &graph) {
     // clone graph
+    Graph* newGraph = graph.clone();
+    g = *newGraph;
 }
 
 void Session::setGraph(Graph* graph) {
     // set graph by pointer
+    g = *graph;
 }
 
-void Session::enqueueInfected(int) {}
+void Session::enqueueInfected(int nId) {
+    infectionQueue.push_back(nId);
+}
 
-int Session::dequeueInfected() {}
+int Session::dequeueInfected() {
+    if (!infectionQueue.empty()){
+        return infectionQueue.front();
+    }
+    return -1;
+}
 
 //getters
 
@@ -47,6 +90,10 @@ TreeType Session::getTreeType() const {
 
 const deque<int> &Session::getInfectionQueue() const {
     return infectionQueue;
+}
+
+const std::vector<Agent *> & Session::getAgents() const {
+    return agents;
 }
 
 // setters

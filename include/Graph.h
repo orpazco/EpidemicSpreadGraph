@@ -7,16 +7,21 @@ class Graph{
 public:
     Graph(); //TODO delete
     Graph(std::vector<std::vector<int>> matrix);
-
+    Graph(const Graph &graph);
 
     void infectNode(int nodeInd);
-    bool isInfected(int nodeInd);
-    void isolateNode(int node);
+    bool isInfected(int nodeInd) const;
+
+    Graph* clone() const;
     const std::vector<std::vector<int>> &getEdges() const;
+    int getLeftChildNotInf(int nodeInd) const;
+    void isolateNode(int node);
+    const std::vector<bool> & getInfectedVector() const;
 
 private:
-    void removeEdge(int sourceNode, int destinationNode);
     std::vector<std::vector<int>> edges;
+    std::vector<bool> infectedNodesVector;
+    void removeEdge(int sourceNode, int destinationNode);
 };
 
 #endif
