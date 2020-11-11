@@ -1,3 +1,4 @@
+#include <queue>
 #include "../include/Graph.h"
 
 using namespace std;
@@ -57,4 +58,36 @@ void Graph::removeEdge(int sourceNode, int destinationNode) {
 
 const std::vector<std::vector<int>> &Graph::getEdges() const {
     return edges;
+}
+
+Tree * Graph::BFS(Session &session, int root) const {
+   Tree *tree = Tree::createTree(session, root);
+
+   // initialize visited nodes vector
+    vector<bool> visitedNodes(getEdges().size());
+    for (int i = 0; i < getEdges().size(); i++) {
+        visitedNodes[i] = false;
+    }
+
+    std::queue<Tree*> queue;
+    // initialize queue
+    queue.push(tree);
+    visitedNodes[root] = true;
+
+    while (!queue.empty()){
+        //dequeue first node
+        Tree* currNode = queue.front();
+        queue.pop();
+        vector<int> neighbors = getEdges()[currNode->getNode()];
+        for (int i = 0; i < neighbors.size(); i++) {
+            if (neighbors[i] && i != currNode->getNode()) {
+                if(!visitedNodes[i]) {
+                    Tree *childNode = Tree::createTree(session, i);
+                    currNode->addChild(childNode);
+                    queue.push(childNode);
+                    visitedNodes[i] = true;
+                }
+            }
+        }
+    }
 }

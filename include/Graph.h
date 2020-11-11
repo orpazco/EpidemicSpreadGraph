@@ -2,6 +2,8 @@
 #define GRAPH_H_
 
 #include <vector>
+#include "Tree.h"
+#include "Session.h"
 
 class Graph{
 public:
@@ -17,6 +19,7 @@ public:
     int getLeftChildNotInf(int nodeInd) const;
     void isolateNode(int node);
     const std::vector<bool> & getInfectedVector() const;
+    Tree* BFS(Session &session, int root) const;
 
 private:
     std::vector<std::vector<int>> edges;

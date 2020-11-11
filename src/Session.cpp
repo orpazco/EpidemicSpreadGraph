@@ -73,9 +73,19 @@ void Session::enqueueInfected(int nId) {
 
 int Session::dequeueInfected() {
     if (!infectionQueue.empty()){
-        return infectionQueue.front();
+        int toRet = infectionQueue.front();
+        infectionQueue.pop_front();
+        return toRet;
     }
     return -1;
+}
+
+bool Session::infQIsEmpty() const {
+    return infectionQueue.empty();
+}
+
+Tree * Session::BFS(Session &session, int root) const {
+    return g.BFS(session, root);
 }
 
 //getters

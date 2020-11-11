@@ -103,7 +103,7 @@ Tree* Tree::createTree(const Session &session, int rootLabel) {
             return new RootTree(rootLabel);
         default:
             return nullptr;
-    };
+    }
 }
 
 // get the most left child

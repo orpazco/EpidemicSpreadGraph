@@ -1,6 +1,4 @@
 #include "../include/Agent.h"
-#include "../include/Session.h"
-#include "../include/Tree.h"
 
 Agent::Agent() {}
 
@@ -13,9 +11,11 @@ Agent * ContactTracer::clone() const {
 }
 
 void ContactTracer::act(Session &session) {
-    Tree* tree = Tree::createTree(session, session.dequeueInfected()); // create a bfs tree
-    int toIsolate = tree->traceTree(); // get the node to isolate
-    session.isolateNode(toIsolate); // isolate the node
+    if(!session.infQIsEmpty()){
+        Tree* tree = session.BFS(session, session.dequeueInfected()); // create a bfs tree
+        int toIsolate = tree->traceTree(); // get the node to isolate
+        session.isolateNode(toIsolate); // isolate the node
+    }
 }
 
 // Virus

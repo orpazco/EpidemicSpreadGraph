@@ -33,6 +33,8 @@ public:
 
     void infectNode(int nodeInd);
     bool isInfected(int nodeInd) const;
+    bool infQIsEmpty() const;
+    Tree* BFS(Session &session, int root) const;
     int getLeftChildNotInf(const int nodeInd) const;
     void virusActed();
     int getCycle() const;
