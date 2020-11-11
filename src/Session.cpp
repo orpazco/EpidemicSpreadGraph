@@ -38,7 +38,7 @@ void Session::infectNode(int nodeInd) {
 }
 
 // return is the given node is infected
-bool Session::isInfected(int nodeInd) {
+bool Session::isInfected(int nodeInd) const {
     return g.isInfected(nodeInd);
 }
 
@@ -92,7 +92,7 @@ const deque<int> &Session::getInfectionQueue() const {
     return infectionQueue;
 }
 
-const std::vector<Agent *> Session::getAgents() const {
+const std::vector<Agent *> & Session::getAgents() const {
     return agents;
 }
 

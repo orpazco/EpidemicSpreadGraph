@@ -32,12 +32,12 @@ public:
     int dequeueInfected();
 
     void infectNode(int nodeInd);
-    bool isInfected(int nodeInd);
+    bool isInfected(int nodeInd) const;
     int getLeftChildNotInf(const int nodeInd) const;
     void virusActed();
     int getCycle() const;
     TreeType getTreeType() const;
-    const std::vector<Agent*> getAgents() const;
+    const std::vector<Agent*> & getAgents() const;
     void isolateNode(int &node);
 
 private:

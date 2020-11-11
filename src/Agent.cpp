@@ -9,7 +9,7 @@ Agent::Agent() {}
 ContactTracer::ContactTracer() {}
 
 Agent * ContactTracer::clone() const {
-    return new ContactTracer;
+    return new ContactTracer(*this);
 }
 
 void ContactTracer::act(Session &session) {
