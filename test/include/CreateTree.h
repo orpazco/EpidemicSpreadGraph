@@ -20,6 +20,9 @@ public:
     static Tree* createTreeMultiChild(TreeType type, int numChild, int root);
     static Tree* createTreeMultiChild(TreeType type, int numChild, int root, int currCycle);
     static void addChild(Tree* tree, TreeType type, int numChild, int startNode, int currCycle);
+    static void addChildGen(Tree* tree, TreeType type, int numChild, int startNode);
+    static void addChildInDepth(Tree* tree, TreeType type, int numChild, int startNode, int depth);
+
 
 private:
     static Tree* createTree(TreeType type,int root, int cycle);

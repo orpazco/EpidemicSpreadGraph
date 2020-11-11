@@ -6,8 +6,8 @@
 Session::Session() {}
 
 Session::Session(const std::string &path) : cycle(0), notTerminated(true) {
-    std::ifstream input(path);
-    input >> parsedJson;
+    std::ifstream input(path);//gets the json config path and serializes it to input as a string
+    input >> parsedJson; // initialize the json with string stream (convention and not choice)
     addParsedAgents();
     setParsedTreeType();
     initGraph();
@@ -102,8 +102,8 @@ void Session::setTreeType(TreeType type) {
 void Session::setParsedTreeType() {
    std::string type=parsedJson["tree"].get<std::string>(); //TODO - handle json errors
    if (type=="R") setTreeType(Root);
-   if (type=="C") setTreeType(Cycle);
-   if (type=="M") setTreeType(MaxRank);
+   else if (type=="C") setTreeType(Cycle);
+   else if (type=="M") setTreeType(MaxRank);
 }
 
 void Session::addParsedAgents() {

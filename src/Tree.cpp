@@ -179,24 +179,29 @@ MaxRankTree::MaxRankTree(int rootLabel): Tree(rootLabel) {}
 //trace
 int MaxRankTree::traceTree() {
     std::vector<Tree*> nodes; // nodes vector for storing MR candidates
-    findMaxRank(0,0,0, nodes);// gets candidates
+    int initMax=0;
+    int initDepth=0;
+    int* currMax= &initMax;
+    int* currMaxDepth= &initDepth;
+    findMaxRank(currMax, currMaxDepth,0, &nodes);// gets candidates
     return findLeftChild(nodes)->getNode();// returns the leftmost child in case of a tie
 }
 
 
-void MaxRankTree::findMaxRank(int currMax, int currMaxDepth , int depth, std::vector<Tree*> nodes)  {
-    int currRank = getChildren().size();
-    if (currRank>=currMax){
-        if(currRank>currMax || depth<currMaxDepth){
-            currMax = currRank;
-            currMaxDepth = depth;
-            nodes={this}; //candidate is largest or shallowest depth
+void MaxRankTree::findMaxRank(int* currMax, int* currMaxDepth , int depth, std::vector<Tree*>* nodes)  {
+    int currRank = getChildren().size(); //TODO-make currmax and currmaxdepth reachable outside recursion
+    if (currRank>=*currMax){
+        if(currRank>*currMax || depth<*currMaxDepth){
+            *currMax = currRank;
+            *currMaxDepth = depth;
+            *nodes={this}; //candidate is largest or shallowest depth
         }
-        else if (depth==currMaxDepth) //rank and depth equal
-            nodes.push_back(this);
+        else if (depth==*currMaxDepth) //rank and depth equal
+            nodes->push_back(this);
     }
     for(int i=0; i<getChildren().size(); i++) {
-        findMaxRank(currMax, currMaxDepth, depth+1, nodes); //check children for candidates
+        MaxRankTree* tree = (MaxRankTree*)(getChildren()[i]);
+        tree->findMaxRank(currMax, currMaxDepth, depth+1, nodes); //check children for candidates //TODO - fix this - return nodes as new
     }
 }
 

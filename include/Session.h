@@ -52,7 +52,6 @@ public:
 private:
     const deque<int> &getInfectionQueue() const;    // TODO - review with orpaz
     void jsonPrint(); //TODO DELETEME
-    void jsonprintsection(vector<string> mat); //TODO DELETEME
     void jsonOutput();
     void addParsedAgents();
     void setParsedTreeType();
