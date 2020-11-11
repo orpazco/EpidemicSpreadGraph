@@ -138,9 +138,7 @@ void TreeTests::CT_traceLessThanChildrenAmount() {
 }
 // endregion
 
-<<<<<<< HEAD
 // region help methods
-=======
 void TreeTests::MRT_traceTree(int shallowChildren, int deepChildren, int depth) {
     bool isPass=true;
     std::vector<std::string> errors;
@@ -160,7 +158,7 @@ void TreeTests::MRT_traceTree(int shallowChildren, int deepChildren, int depth) 
         isPass=false;
         errors.push_back("Expected trace:"+  std::to_string(expected)+ ", actual trace: " + std::to_string(trace));
     }
-    TestMain::assert(isPass, __FUNCTION__ , errors);
+    TestMain::assert1(isPass, __FUNCTION__ , errors);
 }
 
 void TreeTests::MRT_traceLesserDepth() {
@@ -177,7 +175,7 @@ void TreeTests::MRT_traceLesserDepth() {
         isPass=false;
         errors.push_back("Expected trace:"+  std::to_string(root+children+1)+ ", actual trace: " + std::to_string(trace));
     }
-    TestMain::assert(isPass, __FUNCTION__ , errors);
+    TestMain::assert1(isPass, __FUNCTION__ , errors);
 }
 
 
@@ -186,10 +184,6 @@ void TreeTests::MRT_traceSameDepth() {
     TreeTests::MRT_traceTree(3,3,0);
 }
 
-
-
-
->>>>>>> 54009b3130712c17f10e0abbbd0be36b82e392b8
 bool TreeTests::compare(Tree *actual, Tree *expected, std::vector<std::string> &errors) {
     bool isPass=true;
     if (expected->getNode() != actual->getNode()){
