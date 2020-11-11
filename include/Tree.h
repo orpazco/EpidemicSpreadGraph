@@ -2,7 +2,6 @@
 #define TREE_H_
 
 #include <vector>
-#include <memory>
 
 class Session;
 

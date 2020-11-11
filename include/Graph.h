@@ -12,13 +12,16 @@ public:
 
     void infectNode(int nodeInd);
     bool isInfected(int nodeInd);
+
     Graph* clone() const;
     const vector<vector<int>> &getEdges() const;
     int getLeftChildNotInf(const int nodeInd);
+    void isolateNode(int node);
 
 private:
     vector<vector<int>> edges;
     vector<bool> infectedNodesVector;
+    void removeEdge(int sourceNode, int destinationNode);
 };
 
 #endif

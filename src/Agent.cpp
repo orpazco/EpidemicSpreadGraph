@@ -1,16 +1,21 @@
 #include "../include/Agent.h"
+#include "../include/Session.h"
+#include "../include/Tree.h"
 
-// Ctor
 Agent::Agent() {}
 
 // Contact Tracer
 
 ContactTracer::ContactTracer() {}
 
-void ContactTracer::act(Session &session) {}
-
 Agent * ContactTracer::clone() const {
     return new ContactTracer;
+}
+
+void ContactTracer::act(Session &session) {
+    Tree* tree = Tree::createTree(session, session.dequeueInfected()); // create a bfs tree
+    int toIsolate = tree->traceTree(); // get the node to isolate
+    session.isolateNode(toIsolate); // isolate the node
 }
 
 // Virus

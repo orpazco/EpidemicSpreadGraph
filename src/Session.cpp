@@ -6,11 +6,10 @@
 Session::Session() {}
 
 Session::Session(const std::string &path) : cycle(0), notTerminated(true) {
-    std::ifstream input(path);//gets the json config path and serializes it to input as a string
-    input >> parsedJson; // initialize the json with string stream (convention and not choice)
-    addParsedAgents();
-    setParsedTreeType();
-    initGraph();
+    jsonInit(path); // initializes config Json
+    addParsedAgents(); // adds agents from the config
+    setParsedTreeType(); // sets tree type according to config
+    initGraph(); // inits graph according to config
     //TODO finish
 }
 
@@ -104,6 +103,12 @@ void Session::setTreeType(TreeType type) {
 
 // json parser functions
 
+void Session::jsonInit(const string &path) {
+    std::ifstream input(path);//gets the json config path and serializes it to input as a string
+    input >> parsedJson; // initialize the json with string stream (convention and not choice)
+
+}
+
 void Session::setParsedTreeType() {
    std::string type=parsedJson["tree"].get<std::string>(); //TODO - handle json errors
    if (type=="R") setTreeType(Root);
@@ -135,6 +140,10 @@ void Session::jsonOutput() {
     output["infected"] = getInfectionQueue();
     std::ofstream outpath("../jsons/outputs/output.json");
     outpath << output;
+}
+
+void Session::isolateNode(int &node){
+    g.isolateNode(node);
 }
 
 void Session::jsonPrint() {}
