@@ -2,6 +2,7 @@
 #include <iostream>
 #include "../include/Session.h"
 #include "../include/Agent.h"
+using namespace std;
 
 Session::Session() {}
 
@@ -41,7 +42,7 @@ bool Session::isInfected(int nodeInd) {
     return g.isInfected(nodeInd);
 }
 
-int Session::getLeftChildNotInf(const int nodeInd) {
+int Session::getLeftChildNotInf(int nodeInd) const {
     return g.getLeftChildNotInf(nodeInd);
 }
 

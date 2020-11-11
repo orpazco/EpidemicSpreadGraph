@@ -8,7 +8,6 @@
 #include "../include/json.hpp"
 
 using json = nlohmann::json;
-using namespace std;
 
 class Agent;
 
@@ -34,7 +33,7 @@ public:
 
     void infectNode(int nodeInd);
     bool isInfected(int nodeInd);
-    int getLeftChildNotInf(const int nodeInd);
+    int getLeftChildNotInf(const int nodeInd) const;
     void virusActed();
     int getCycle() const;
     TreeType getTreeType() const;
@@ -47,12 +46,12 @@ private:
     std::vector<Agent*> agents;
     int cycle;
     json parsedJson;
-    deque<int> infectionQueue;
+    std::deque<int> infectionQueue;
     bool notTerminated;
 public:
 
 private:
-    const deque<int> &getInfectionQueue() const;    // TODO - review with orpaz
+    const std::deque<int> &getInfectionQueue() const;    // TODO - review with orpaz
     void jsonPrint(); //TODO DELETEME
     void jsonOutput();
     void addParsedAgents();

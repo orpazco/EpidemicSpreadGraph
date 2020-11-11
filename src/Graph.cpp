@@ -11,7 +11,7 @@ Graph::Graph(vector<vector<int>> matrix): edges(std::move(matrix)), infectedNode
 Graph::Graph(const Graph &graph) {
     vector<vector<int>> newEdges(getEdges());
     edges = newEdges;
-    infectedNodesVector = graph.infectedNodesVector;
+    infectedNodesVector = graph.getInfectedVector();
 }
 
 Graph * Graph::clone() const {
@@ -22,12 +22,16 @@ void Graph::infectNode(int nodeInd) {
     infectedNodesVector[nodeInd] = true;
 }
 
-bool Graph::isInfected(int nodeInd) {
-    return infectedNodesVector[0];
+bool Graph::isInfected(int nodeInd) const{
+    return infectedNodesVector[nodeInd];
+}
+
+const vector<bool> & Graph::getInfectedVector() const {
+    return infectedNodesVector;
 }
 
 // get the most left child (the smallest) of the given node
-int Graph::getLeftChildNotInf(const int nodeInd) {
+int Graph::getLeftChildNotInf(int nodeInd) const{
     vector<int> nodeEdges = getEdges()[nodeInd];
     for (int i = 0; i < nodeEdges.size(); i++) {
         // if the node isn't infected return the node id

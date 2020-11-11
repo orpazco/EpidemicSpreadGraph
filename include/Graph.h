@@ -2,25 +2,25 @@
 #define GRAPH_H_
 
 #include <vector>
-using namespace std;
 
 class Graph{
 public:
     Graph(); //TODO delete
-    Graph(vector<vector<int>> matrix);
+    Graph(std::vector<std::vector<int>> matrix);
     Graph(const Graph &graph);
 
     void infectNode(int nodeInd);
-    bool isInfected(int nodeInd);
+    bool isInfected(int nodeInd) const;
 
     Graph* clone() const;
-    const vector<vector<int>> &getEdges() const;
-    int getLeftChildNotInf(const int nodeInd);
+    const std::vector<std::vector<int>> &getEdges() const;
+    int getLeftChildNotInf(int nodeInd) const;
     void isolateNode(int node);
+    const std::vector<bool> & getInfectedVector() const;
 
 private:
-    vector<vector<int>> edges;
-    vector<bool> infectedNodesVector;
+    std::vector<std::vector<int>> edges;
+    std::vector<bool> infectedNodesVector;
     void removeEdge(int sourceNode, int destinationNode);
 };
 

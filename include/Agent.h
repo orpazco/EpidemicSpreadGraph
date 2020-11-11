@@ -4,8 +4,6 @@
 #include <vector>
 #include "Session.h"
 
-
-
 class Agent{
 public:
     Agent();
