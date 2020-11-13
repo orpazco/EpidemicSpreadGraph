@@ -10,10 +10,15 @@ public:
     // copy ctor
     Graph(const Graph& other);
     // setters
+
     void infectNode(int nodeInd);
-    bool isInfected(int nodeInd);
-    void isolateNode(int node);
+    bool isInfected(int nodeInd) const;
+
+    Graph* clone() const;
     const std::vector<std::vector<int>> &getEdges() const;
+    int getLeftChildNotInf(int nodeInd) const;
+    void isolateNode(int node);
+    const std::vector<bool> & getInfectedVector() const;
 
     // assignment op
     Graph& operator=(const Graph& other);
@@ -21,8 +26,9 @@ public:
     // move ctor
 
 private:
-    void removeEdge(int sourceNode, int destinationNode);
     std::vector<std::vector<int>> edges;
+    std::vector<bool> infectedNodesVector;
+    void removeEdge(int sourceNode, int destinationNode);
 };
 
 #endif

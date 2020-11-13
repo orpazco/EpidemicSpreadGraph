@@ -11,9 +11,8 @@
 class TestMain {
 public:
     static int errCounter;
-
-    static void assert(bool isPass, const std::string& testName);
-    static void assert(bool isPass, const std::string& testName, const std::vector<std::string>& errors);
+    
+    static void assert1(bool isPass, const std::string& testName, const std::vector<std::string>& errors);
     static void  finish();
 };
 

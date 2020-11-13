@@ -1,14 +1,45 @@
 #include "../include/Graph.h"
+using namespace std;
 // ctor
-Graph::Graph(std::vector<std::vector<int>> matrix): edges(matrix){}
+Graph::Graph(vector<vector<int>> matrix): edges(std::move(matrix)), infectedNodesVector({}){
+    infectedNodesVector.resize(edges.size());
+}
 
 // copy ctor
-Graph::Graph(const Graph &other): edges(other.edges) {}
+Graph::Graph(const Graph &other): edges(other.edges), infectedNodesVector(other.infectedNodesVector){}
 
 // assignment op
 Graph& Graph::operator=(const Graph &other) {
-    edges=other.getEdges();
+    edges = other.getEdges();
     return *this;
+}
+
+Graph* Graph::clone() const {
+    return new Graph(*this);
+}
+
+void Graph::infectNode(int nodeInd) {
+    infectedNodesVector[nodeInd] = true;
+}
+
+bool Graph::isInfected(int nodeInd) const{
+    return infectedNodesVector[nodeInd];
+}
+
+const vector<bool> & Graph::getInfectedVector() const {
+    return infectedNodesVector;
+}
+
+// get the most left child (the smallest) of the given node
+int Graph::getLeftChildNotInf(int nodeInd) const{
+    vector<int> nodeEdges = getEdges()[nodeInd];
+    for (int i = 0; i < nodeEdges.size(); i++) {
+        // if the node isn't infected return the node id
+        if (i != nodeInd && !isInfected(nodeEdges[i])){
+            return i;
+        }
+    }
+    return -1;
 }
 
 void Graph::isolateNode(int isoNode) { //TODO - keep neighbors in better data structure?
