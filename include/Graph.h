@@ -22,8 +22,10 @@ public:
 
     // assignment op
     Graph& operator=(const Graph& other);
-    //move assignment
     // move ctor
+    Graph(Graph&& other);
+    //move assignment op
+    Graph& operator=(Graph&& other);
 
 private:
     std::vector<std::vector<int>> edges;

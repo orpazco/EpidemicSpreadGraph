@@ -6,11 +6,26 @@ Graph::Graph(vector<vector<int>> matrix): edges(std::move(matrix)), infectedNode
 }
 
 // copy ctor
-Graph::Graph(const Graph &other): edges(other.edges), infectedNodesVector(other.infectedNodesVector){}
+Graph::Graph(const Graph &other)
+        : edges(other.edges), infectedNodesVector(other.infectedNodesVector){}
+
+// move ctor
+Graph::Graph(Graph &&other)
+        :edges(other.edges), infectedNodesVector(other.infectedNodesVector)  {
+    other.edges.clear();
+}
 
 // assignment op
 Graph& Graph::operator=(const Graph &other) {
     edges = other.getEdges();
+    return *this;
+}
+
+//move assign op
+Graph& Graph::operator=(Graph &&other) {
+    *this=other;
+    other.edges.clear();
+    other.infectedNodesVector.clear();
     return *this;
 }
 
@@ -29,7 +44,6 @@ bool Graph::isInfected(int nodeInd) const{
 const vector<bool> & Graph::getInfectedVector() const {
     return infectedNodesVector;
 }
-
 // get the most left child (the smallest) of the given node
 int Graph::getLeftChildNotInf(int nodeInd) const{
     vector<int> nodeEdges = getEdges()[nodeInd];
@@ -42,11 +56,12 @@ int Graph::getLeftChildNotInf(int nodeInd) const{
     return -1;
 }
 
-void Graph::isolateNode(int isoNode) { //TODO - keep neighbors in better data structure?
+void Graph::isolateNode(int isoNode) {
     for (int i = 0; i < getEdges().size() ; ++i) { // for every node in the graph, remove the edge to and from isoNode if exists
         removeEdge(isoNode, i);
     }
 }
+
 void Graph::removeEdge(int sourceNode, int destinationNode) {
     if (edges[sourceNode][destinationNode]&& sourceNode!=destinationNode) // remove e = (s,d) and s!=d
         edges[sourceNode][destinationNode] = false;

@@ -4,16 +4,16 @@
 //Tree
 
 //ctor
-Tree::Tree(int rootLabel): node(rootLabel){}
+Tree::Tree(int rootLabel): node(rootLabel), children({}){}
 
 //copy ctor
-Tree::Tree(const Tree &other){
+Tree::Tree(const Tree &other): node(other.node), children({}){
     node = other.node;//copies node and children
     copyChildren(other);
 }
 
 // move C'tor
-Tree::Tree(Tree&& other) {
+Tree::Tree(Tree&& other): node(other.node), children({}) {
     node = other.node;
     moveChildren(other);
 }
@@ -30,7 +30,7 @@ Tree& Tree::operator=(const Tree &other) {
 }
 
 // move assignment
-const Tree & Tree::operator=(Tree &&other) {
+const Tree& Tree::operator=(Tree &&other) { //why const?
     if (&other != this){
         clear();
         children.clear();
@@ -42,14 +42,15 @@ const Tree & Tree::operator=(Tree &&other) {
 
 //destructor
 void Tree::clear(){
-    for(int i=0;i<children.size(); i++)
+    for(int i=0;i<children.size(); i++){
+        if (children[i])
         delete(children[i]);//deep child deletion
+    }
+    children.clear();
 }
 
 void Tree::copyChildren(const Tree &other){
     for (int i = 0; i<other.children.size(); i++){
-//        Tree* treeOther = other.getChildren()[i]->clone();
-//        children.push_back(treeOther); //TODO test this before deleting
           addChild(*other.getChildren()[i]);
     }
 }
@@ -59,8 +60,8 @@ void Tree::copyChildren(const Tree &other){
 void Tree::moveChildren(Tree &other) {
     for (int i=0; i < other.children.size(); i++){
         children.push_back(other.children[i]);
-        other.children[i] = nullptr;
     }
+    other.children.clear();
 }
 
 Tree::~Tree(){
@@ -103,11 +104,11 @@ Tree* Tree::createTree(const Session &session, int rootLabel) {
             return new RootTree(rootLabel);
         default:
             return nullptr;
-    };
+    }
 }
 
 // get the most left child
-Tree * Tree::findLeftChild(const std::vector<Tree*> &children) {
+Tree* Tree::findLeftChild(const std::vector<Tree*> &children) {
     // init left node
     int leftNode = children[0]->getNode();
     Tree* leftChild = children[0];
@@ -128,15 +129,15 @@ CycleTree::CycleTree(const CycleTree &other): Tree(other) {
     currCycle = other.getCurrCycle();
 }
 
-CycleTree & CycleTree::operator=(const CycleTree &other) {
-    currCycle = other.getCurrCycle();
+CycleTree& CycleTree::operator=(const CycleTree &other) {
     Tree::operator=(other);
+    currCycle = other.getCurrCycle();
     return *this;
 }
 
-const CycleTree & CycleTree::operator=(CycleTree &&other) {
-    currCycle = other.getCurrCycle();
+const CycleTree & CycleTree::operator=(CycleTree &&other){ //why is this const?
     Tree::operator=(other);
+    currCycle = other.getCurrCycle();
     return *this;
 }
 
