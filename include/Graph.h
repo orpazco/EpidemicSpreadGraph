@@ -5,14 +5,20 @@
 
 class Graph{
 public:
-    Graph(); //TODO delete
+    // ctor
     Graph(std::vector<std::vector<int>> matrix);
-
-
+    // copy ctor
+    Graph(const Graph& other);
+    // setters
     void infectNode(int nodeInd);
     bool isInfected(int nodeInd);
     void isolateNode(int node);
     const std::vector<std::vector<int>> &getEdges() const;
+
+    // assignment op
+    Graph& operator=(const Graph& other);
+    //move assignment
+    // move ctor
 
 private:
     void removeEdge(int sourceNode, int destinationNode);
