@@ -25,6 +25,7 @@ void Session::simulate() {
             getAgents()[i]->act(*this);
         }
     }
+    jsonOutput();
 }
 
 void Session::virusActed() {
@@ -34,7 +35,6 @@ void Session::virusActed() {
 // update the infected node in graph and add new virus to agent list
 void Session::infectNode(int nodeInd) {
     g.infectNode(nodeInd);
-    addAgent(new Virus(nodeInd));
 }
 
 // return is the given node is infected
@@ -148,7 +148,7 @@ void Session::jsonOutput() {
     // infected queue under "infected": [array of all infected nodes]
     json output;
     output["graph"] = g.getEdges();
-    output["infected"] = getInfectionQueue();
+    output["infected"] = g.getInfectedVector();
     std::ofstream outpath("../jsons/outputs/output.json");
     outpath << output;
 }

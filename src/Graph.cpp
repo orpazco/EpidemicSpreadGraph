@@ -36,7 +36,7 @@ int Graph::getLeftChildNotInf(int nodeInd) const{
     vector<int> nodeEdges = getEdges()[nodeInd];
     for (int i = 0; i < nodeEdges.size(); i++) {
         // if the node isn't infected return the node id
-        if (i != nodeInd && !isInfected(nodeEdges[i])){
+        if (i != nodeInd && nodeEdges[i] && !isInfected(i)){
             return i;
         }
     }
@@ -90,4 +90,5 @@ Tree * Graph::BFS(Session &session, int root) const {
             }
         }
     }
+    return tree;
 }
