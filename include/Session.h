@@ -19,7 +19,6 @@ enum TreeType{
 
 class Session{
 public:
-    Session(); // TODO delete (for tests)
     Session(const std::string& path); // parse the json file, init graph, tree type and agents list
 
     void simulate(); // start the game

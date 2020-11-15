@@ -56,5 +56,6 @@ Tree * CreateTree::createTree(TreeType type, int root, int currCycle) {
             return new MaxRankTree(root);
         case Root:
             return new RootTree(root);
+        default:return nullptr;
     }
 }

@@ -4,9 +4,10 @@
 #include "../include/Agent.h"
 using namespace std;
 
-Session::Session() {}
 
-Session::Session(const std::string &path) : cycle(0), notTerminated(true) {
+Session::Session(const std::string &path)
+    : cycle(0), notTerminated(true), g({}), parsedJson({}),
+    infectionQueue({}), agents({}) {
     jsonInit(path); // initializes config Json
     addParsedAgents(); // adds agents from the config
     setParsedTreeType(); // sets tree type according to config
