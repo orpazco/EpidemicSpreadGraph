@@ -19,14 +19,25 @@ enum TreeType{
 
 class Session{
 public:
-    Session(); // TODO delete (for tests)
-    Session(const std::string& path); // parse the json file, init graph, tree type and agents list
+    //Ctor
+    Session(const std::string& path);
+    // destructor
+    virtual ~Session();
+    void clear();
+    // copy ctor
+    Session(const Session& other);
+    // assignment
+    Session& operator=(const Session& other);
+    // move ctor
+    Session(Session&& other);
+    // move assignment
+    Session& operator=(Session&& other);
 
-    void simulate(); // start the game
-    void addAgent(const Agent& agent); // add agent to the list
-    void addAgent(Agent* agent); // add agent to the list
-    void setGraph(const Graph& graph); // init the graph
-    void setGraph(Graph* graph); // init the graph
+    void simulate();
+    void addAgent(const Agent& agent);
+    void addAgent(Agent* agent);
+    void setGraph(const Graph& graph);
+    void setGraph(Graph* graph);
 
     void enqueueInfected(int);
     int dequeueInfected();
@@ -50,9 +61,7 @@ private:
     json parsedJson;
     std::deque<int> infectionQueue;
     bool notTerminated;
-public:
 
-private:
     const std::deque<int> &getInfectionQueue() const;    // TODO - review with orpaz
     void jsonPrint(); //TODO DELETEME
     void jsonOutput();
@@ -61,6 +70,7 @@ private:
     void setTreeType(TreeType type);
     void initGraph();
     void jsonInit(const std::string &path);
+    void copyAgents(const Session &other);
 };
 
 #endif

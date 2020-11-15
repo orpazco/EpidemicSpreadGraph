@@ -4,8 +4,6 @@
 #include "../include/Agent.h"
 using namespace std;
 
-Session::Session() {}
-
 Session::Session(const std::string &path) : cycle(0), notTerminated(true) {
     jsonInit(path); // initializes config Json
     addParsedAgents(); // adds agents from the config
@@ -13,6 +11,54 @@ Session::Session(const std::string &path) : cycle(0), notTerminated(true) {
     initGraph(); // inits graph according to config
     //TODO finish
 }
+
+// destructor
+Session::~Session() {
+    clear();
+}
+
+void Session::clear(){
+    if (!getAgents().empty()){
+        for (int i = 0; i < getAgents().size(); i++) {
+            if (agents[i])
+                delete agents[i];
+        }
+        agents.clear();
+    }
+    if (parsedJson)
+        parsedJson.clear();
+    if (!infectionQueue.empty())
+        infectionQueue.clear();
+}
+
+// copy ctor
+Session::Session(const Session& other) {
+    g = (*(other.g.clone()));
+    copyAgents(other);
+    treeType = other.treeType;
+    cycle = other.cycle;
+    parsedJson = other.parsedJson; //TODO: test deep copy
+    infectionQueue = other.infectionQueue;
+    notTerminated = other.notTerminated;
+}
+
+// assignment
+Session& Session::operator=(const Session &other) {
+     if (this != &other){
+         treeType = other.treeType;
+         cycle = other.cycle;
+         parsedJson = other.parsedJson;
+         infectionQueue = other.infectionQueue;
+         notTerminated = other.notTerminated;
+         g = other.g;
+         copyAgents(other);
+     }
+}
+
+// move ctor
+Session::Session(Session&& other){}
+// move assignment
+Session& Session::operator=(Session&& other){}
 
 void Session::simulate() {
     while (notTerminated){
@@ -158,3 +204,9 @@ void Session::isolateNode(int &node){
 }
 
 void Session::jsonPrint() {}
+
+void Session::copyAgents(const Session &other) {
+    for (std::vector<Agent*>::const_iterator it = other.agents.begin(); it != other.agents.end(); it++) {
+        addAgent(*it);
+    }
+}
