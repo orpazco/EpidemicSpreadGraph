@@ -12,20 +12,21 @@ Graph::Graph(const Graph &other)
 // move ctor
 Graph::Graph(Graph &&other)
         :edges(other.edges), infectedNodesVector(other.infectedNodesVector)  {
-    other.edges.clear();
 }
 
 // assignment op
 Graph& Graph::operator=(const Graph &other) {
-    edges = other.getEdges();
+    edges = other.edges;
+    infectedNodesVector = other.infectedNodesVector;
     return *this;
 }
 
 //move assign op
 Graph& Graph::operator=(Graph &&other) {
-    *this=other;
-    other.edges.clear();
-    other.infectedNodesVector.clear();
+    if (this!=&other){
+        infectedNodesVector = other.infectedNodesVector;
+        edges = other.edges;
+    }
     return *this;
 }
 

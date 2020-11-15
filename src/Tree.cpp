@@ -30,7 +30,7 @@ Tree& Tree::operator=(const Tree &other) {
 }
 
 // move assignment
-const Tree& Tree::operator=(Tree &&other) { //why const?
+Tree& Tree::operator=(Tree &&other) { //why const?
     if (&other != this){
         clear();
         children.clear();
