@@ -53,6 +53,7 @@ Session& Session::operator=(const Session &other) {
          g = other.g;
          copyAgents(other);
      }
+    return *this;
 }
 
 // move ctor
@@ -83,6 +84,7 @@ Session& Session::operator=(Session&& other){
         agents = std::move(other.agents);
     }
     g = other.g;
+    return *this;
 }
 
 void Session::simulate() {

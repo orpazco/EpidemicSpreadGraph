@@ -10,7 +10,7 @@ public:
     virtual Agent* clone() const=0;
 
     // destructor
-    virtual ~Agent()=0;
+    virtual ~Agent()=default;
 };
 
 class ContactTracer: public Agent{
