@@ -7,9 +7,11 @@
 
 class Graph{
 public:
-    Graph(); //TODO delete
+    // ctor
     Graph(std::vector<std::vector<int>> matrix);
-    Graph(const Graph &graph);
+    // copy ctor
+    Graph(const Graph& other);
+    // setters
 
     void infectNode(int nodeInd);
     bool isInfected(int nodeInd) const;
@@ -20,6 +22,13 @@ public:
     void isolateNode(int node);
     const std::vector<bool> & getInfectedVector() const;
     Tree* BFS(Session &session, int root);
+
+    // assignment op
+    Graph& operator=(const Graph& other);
+    // move ctor
+    Graph(Graph&& other);
+    //move assignment op
+    Graph& operator=(Graph&& other);
 
 private:
     std::vector<std::vector<int>> edges;

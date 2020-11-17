@@ -4,7 +4,7 @@
 #include "../include/Agent.h"
 using namespace std;
 
-Session::Session(const std::string &path) : cycle(0), notTerminated(true) {
+Session::Session(const std::string &path): cycle(0), notTerminated(true), g({}), parsedJson({}), infectionQueue({}), agents({}) {
     jsonInit(path); // initializes config Json
     addParsedAgents(); // adds agents from the config
     setParsedTreeType(); // sets tree type according to config
@@ -29,7 +29,7 @@ void Session::clear(){
 }
 
 // copy ctor
-Session::Session(const Session& other) {
+Session::Session(const Session& other): g({}), parsedJson({}), infectionQueue({}), agents({}) {
     g = (*(other.g.clone()));
     copyAgents(other);
     treeType = other.treeType;
@@ -55,7 +55,7 @@ Session& Session::operator=(const Session &other) {
 }
 
 // move ctor
-Session::Session(Session&& other){
+Session::Session(Session&& other): g({}), parsedJson({}), infectionQueue({}), agents({}){
     treeType = other.treeType;
     cycle = other.cycle;
     parsedJson = other.parsedJson;
@@ -95,12 +95,19 @@ void Session::simulate() {
             // activate each agent
             getAgents()[i]->act(*this);
         }
+        terminationCheck(agentsSize);
     }
     jsonOutput();
 }
 
-void Session::virusActed() {
-    notTerminated = true;
+
+void Session::terminationCheck(int &numOfAgents) {
+    for (int i = 0; i < numOfAgents; i++) { // out of all active agents (not carrier nodes)
+        // activate each agent
+        int node = getAgents()[i]->canInfect(*this); // canInfect returns the node id the virus will infect in the next cycle
+        if (node!=-1)// returns any node at all
+            notTerminated = true;
+    }
 }
 
 // update the infected node in graph and add new virus to agent list
@@ -113,7 +120,7 @@ bool Session::isInfected(int nodeInd) const {
     return g.isInfected(nodeInd);
 }
 
-int Session::getLeftChildNotInf(int nodeInd) const {
+int Session::getLeftChildNotInf(int nodeInd) {
     return g.getLeftChildNotInf(nodeInd);
 }
 
@@ -155,7 +162,7 @@ bool Session::infQIsEmpty() const {
     return infectionQueue.empty();
 }
 
-Tree * Session::BFS(Session &session, int root) const {
+Tree * Session::BFS(Session &session, int root) {
     return g.BFS(session, root);
 }
 
@@ -233,8 +240,6 @@ void Session::jsonOutput() {
 void Session::isolateNode(int &node){
     g.isolateNode(node);
 }
-
-void Session::jsonPrint() {}
 
 void Session::copyAgents(const Session &other) {
     for (std::vector<Agent*>::const_iterator it = other.agents.begin(); it != other.agents.end(); it++) {

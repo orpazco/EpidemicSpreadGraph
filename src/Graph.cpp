@@ -1,21 +1,37 @@
 #include <queue>
 #include "../include/Graph.h"
-
 using namespace std;
-
-Graph::Graph() {}
-
+// ctor
 Graph::Graph(vector<vector<int>> matrix): edges(std::move(matrix)), infectedNodesVector({}){
     infectedNodesVector.resize(edges.size());
 }
 
-Graph::Graph(const Graph &graph) {
-    vector<vector<int>> newEdges(getEdges());
-    edges = newEdges;
-    infectedNodesVector = graph.getInfectedVector();
+// copy ctor
+Graph::Graph(const Graph &other)
+        : edges(other.edges), infectedNodesVector(other.infectedNodesVector){}
+
+// move ctor
+Graph::Graph(Graph &&other)
+        :edges(other.edges), infectedNodesVector(other.infectedNodesVector)  {
 }
 
-Graph * Graph::clone() const {
+// assignment op
+Graph& Graph::operator=(const Graph &other) {
+    edges = other.edges;
+    infectedNodesVector = other.infectedNodesVector;
+    return *this;
+}
+
+//move assign op
+Graph& Graph::operator=(Graph &&other) {
+    if (this!=&other){
+        infectedNodesVector = other.infectedNodesVector;
+        edges = other.edges;
+    }
+    return *this;
+}
+
+Graph* Graph::clone() const {
     return new Graph(*this);
 }
 
@@ -30,7 +46,6 @@ bool Graph::isInfected(int nodeInd) const {
 const vector<bool> & Graph::getInfectedVector() const {
     return infectedNodesVector;
 }
-
 // get the most left child (the smallest) of the given node
 int Graph::getLeftChildNotInf(int nodeInd) {
     vector<int> *nodeEdges = (&(edges[nodeInd]));

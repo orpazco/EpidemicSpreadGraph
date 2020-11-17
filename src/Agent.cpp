@@ -20,6 +20,8 @@ void ContactTracer::act(Session &session) {
     }
 }
 
+int ContactTracer::canInfect(Session& session) {return -1;} // can never infect
+
 // Virus
 
 Virus::Virus(int nodeInd): nodeInd(nodeInd) {}
@@ -33,11 +35,10 @@ void Virus::act(Session &session) {
     }
 
     // spread the virus to the left most child
-    int leftChild = session.getLeftChildNotInf(getNodeInd());
-    if (leftChild != -1) {
-        session.addAgent(Virus(leftChild));
+    int toInfect = canInfect(session);
+    if (toInfect != -1) {
+        session.infectNode(toInfect);
         // finish
-        session.virusActed();
     }
 }
 
@@ -52,4 +53,9 @@ int Virus::getNodeInd() const {
 
 Agent * Virus::clone() const {
     return new Virus(nodeInd);
+}
+
+int Virus::canInfect(Session& session) {
+    int leftChild = session.getLeftChildNotInf(getNodeInd()); // return the node id of the next node this virus can infect
+    return leftChild;
 }

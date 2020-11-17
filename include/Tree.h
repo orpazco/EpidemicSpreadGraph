@@ -34,7 +34,8 @@ public:
 
     // assign op
     Tree& operator=(const Tree& other);
-    const Tree& operator=(Tree&& other);
+    // move assign op
+    Tree& operator=(Tree&& other);
 
 
 private:
