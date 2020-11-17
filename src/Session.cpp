@@ -25,7 +25,7 @@ void Session::clear(){
         }
         agents.clear();
     }
-    if (parsedJson)
+    if (!parsedJson.empty())
         parsedJson.clear();
     if (!infectionQueue.empty())
         infectionQueue.clear();
@@ -221,7 +221,13 @@ void Session::jsonOutput() {
     // infected queue under "infected": [array of all infected nodes]
     json output;
     output["graph"] = g.getEdges();
-    output["infected"] = g.getInfectedVector();
+    // write to json file the infected nodes
+    vector<int> infectedToJson;
+    for (int i = 0; i < g.getInfectedVector().size(); i++) {
+        if (g.getInfectedVector()[i])
+            infectedToJson.push_back(i);
+    }
+    output["infected"] = infectedToJson;
     std::ofstream outpath("../jsons/outputs/output.json");
     outpath << output;
 }
