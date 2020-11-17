@@ -10,6 +10,7 @@ public:
 
     virtual void act(Session& session)=0;
     virtual Agent* clone() const=0;
+    virtual int canInfect(Session& session) =0;
 };
 
 class ContactTracer: public Agent{
@@ -18,7 +19,9 @@ public:
 
     virtual void act(Session& session);
     virtual Agent* clone() const;
+    virtual int canInfect(Session& session);
 };
+
 
 
 class Virus: public Agent{
@@ -28,6 +31,7 @@ public:
     virtual void act(Session& session);
     virtual Agent* clone() const;
     int getNodeInd() const;
+    virtual int canInfect(Session& session);
 private:
     const int nodeInd;
 };
