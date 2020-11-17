@@ -1,10 +1,12 @@
 #include "../include/Agent.h"
 
-Agent::Agent() {}
 
 // Contact Tracer
 
 ContactTracer::ContactTracer() {}
+
+// destructor
+ContactTracer::~ContactTracer() {}
 
 Agent * ContactTracer::clone() const {
     return new ContactTracer(*this);
@@ -39,6 +41,11 @@ void Virus::act(Session &session) {
         session.virusActed();
     }
 }
+
+// destructor
+Virus::~Virus(){}
+
+Virus::Virus(const Virus &other): nodeInd(other.nodeInd) {}
 
 int Virus::getNodeInd() const {
     return nodeInd;

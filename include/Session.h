@@ -71,6 +71,7 @@ private:
     void initGraph();
     void jsonInit(const std::string &path);
     void copyAgents(const Session &other);
+    void moveAgents(Session&& other);
 };
 
 #endif

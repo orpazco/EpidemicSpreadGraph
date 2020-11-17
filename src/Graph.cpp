@@ -61,30 +61,36 @@ const std::vector<std::vector<int>> &Graph::getEdges() const {
 }
 
 Tree * Graph::BFS(Session &session, int root) const {
+    // create empty tree
    Tree *tree = Tree::createTree(session, root);
 
    // initialize visited nodes vector
-    vector<bool> visitedNodes(getEdges().size());
-    for (int i = 0; i < getEdges().size(); i++) {
+   int edgesSize = getEdges().size();
+    vector<bool> visitedNodes(edgesSize);
+    for (int i = 0; i < edgesSize; i++) {
         visitedNodes[i] = false;
     }
 
     std::queue<Tree*> queue;
-    // initialize queue
+    // initialize queue and update visited root node
     queue.push(tree);
-    visitedNodes[root] = true;
+    visitedNodes[tree->getNode()] = true;
 
     while (!queue.empty()){
-        //dequeue first node
+        // dequeue first node from queue
         Tree* currNode = queue.front();
         queue.pop();
+        // get vector of all the node neighbors and iterate them
         vector<int> neighbors = getEdges()[currNode->getNode()];
         for (int i = 0; i < neighbors.size(); i++) {
             if (neighbors[i] && i != currNode->getNode()) {
+                // if we encounter node we hasnt visited already add this node to the returning tree,
+                // and also add this node to the queue for the next iterations
                 if(!visitedNodes[i]) {
                     Tree *childNode = Tree::createTree(session, i);
                     currNode->addChild(childNode);
                     queue.push(childNode);
+                    // mark this node
                     visitedNodes[i] = true;
                 }
             }

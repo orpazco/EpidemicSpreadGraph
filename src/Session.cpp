@@ -56,9 +56,34 @@ Session& Session::operator=(const Session &other) {
 }
 
 // move ctor
-Session::Session(Session&& other){}
+Session::Session(Session&& other){
+    treeType = other.treeType;
+    cycle = other.cycle;
+    parsedJson = other.parsedJson;
+    infectionQueue = other.infectionQueue;
+    notTerminated = other.notTerminated;
+    agents = std::move(other.agents);
+    g = other.g; //TODO check
+}
+
 // move assignment
-Session& Session::operator=(Session&& other){}
+Session& Session::operator=(Session&& other){
+    treeType = other.treeType;
+    cycle = other.cycle;
+    parsedJson = other.parsedJson;
+    infectionQueue = other.infectionQueue;
+    notTerminated = other.notTerminated;
+    // empty the agents list before steal the list from other
+    if (!agents.empty()){
+        for (int i = 0; i < agents.size(); i++) {
+            if (agents[i])
+                delete agents[i];
+        }
+        agents.clear();
+        agents = std::move(other.agents);
+    }
+    g = other.g;
+}
 
 void Session::simulate() {
     while (notTerminated){
@@ -207,6 +232,6 @@ void Session::jsonPrint() {}
 
 void Session::copyAgents(const Session &other) {
     for (std::vector<Agent*>::const_iterator it = other.agents.begin(); it != other.agents.end(); it++) {
-        addAgent(*it);
+        addAgent(*(*it));
     }
 }
