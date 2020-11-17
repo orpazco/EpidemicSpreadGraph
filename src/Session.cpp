@@ -25,11 +25,18 @@ void Session::simulate() {
             // activate each agent
             getAgents()[i]->act(*this);
         }
+        terminationCheck(agentsSize);
     }
 }
 
-void Session::virusActed() {
-    notTerminated = true;
+
+void Session::terminationCheck(int &numOfAgents) {
+    for (int i = 0; i < numOfAgents; i++) { // out of all active agents (not carrier nodes)
+        // activate each agent
+        int node = getAgents()[i]->canInfect(*this); // canInfect returns the node id the virus will infect in the next cycle
+        if (node!=-1)// returns any node at all
+            notTerminated = true;
+    }
 }
 
 // update the infected node in graph and add new virus to agent list

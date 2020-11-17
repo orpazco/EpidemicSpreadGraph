@@ -33,7 +33,6 @@ public:
     void infectNode(int nodeInd);
     bool isInfected(int nodeInd) const;
     int getLeftChildNotInf(const int nodeInd) const;
-    void virusActed();
     int getCycle() const;
     TreeType getTreeType() const;
     const std::vector<Agent*> & getAgents() const;
@@ -47,9 +46,7 @@ private:
     json parsedJson;
     std::deque<int> infectionQueue;
     bool notTerminated;
-public:
-
-private:
+    void terminationCheck(int& numOfAgents);
     const std::deque<int> &getInfectionQueue() const;    // TODO - review with orpaz
     void jsonPrint(); //TODO DELETEME
     void jsonOutput();

@@ -9,7 +9,7 @@ int main(int argc, char** argv){
 
     // run tests
     //TreeTests T;
-    SessionTests S;
+//    SessionTests S;
 
     TestMain::finish();
     return 0;
