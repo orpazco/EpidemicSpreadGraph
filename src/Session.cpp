@@ -4,15 +4,85 @@
 #include "../include/Agent.h"
 using namespace std;
 
-
-Session::Session(const std::string &path)
-    : cycle(0), notTerminated(true), g({}), parsedJson({}),
-    infectionQueue({}), agents({}) {
+Session::Session(const std::string &path): cycle(0), notTerminated(true), g({}), parsedJson({}), infectionQueue({}), agents({}) {
     jsonInit(path); // initializes config Json
     addParsedAgents(); // adds agents from the config
     setParsedTreeType(); // sets tree type according to config
     initGraph(); // inits graph according to config
-    //TODO finish
+}
+
+// destructor
+Session::~Session() {
+    clear();
+}
+
+void Session::clear(){
+    if (!getAgents().empty()){
+        for (int i = 0; i < getAgents().size(); i++) {
+            if (agents[i])
+                delete agents[i];
+        }
+        agents.clear();
+    }
+    if (!parsedJson.empty())
+        parsedJson.clear();
+}
+
+// copy ctor
+Session::Session(const Session& other): g({}), parsedJson({}), infectionQueue({}), agents({}) {
+    g = (*(other.g.clone()));
+    copyAgents(other);
+    treeType = other.treeType;
+    cycle = other.cycle;
+    parsedJson = other.parsedJson; //TODO: test deep copy
+    infectionQueue = other.infectionQueue;
+    notTerminated = other.notTerminated;
+}
+
+// assignment
+Session& Session::operator=(const Session &other) {
+     if (this != &other){
+         clear();
+         treeType = other.treeType;
+         cycle = other.cycle;
+         parsedJson = other.parsedJson;
+         infectionQueue = other.infectionQueue;
+         notTerminated = other.notTerminated;
+         g = other.g;
+         copyAgents(other);
+     }
+    return *this;
+}
+
+// move ctor
+Session::Session(Session&& other): g({}), parsedJson({}), infectionQueue({}), agents({}){
+    treeType = other.treeType;
+    cycle = other.cycle;
+    parsedJson = other.parsedJson;
+    infectionQueue = other.infectionQueue;
+    notTerminated = other.notTerminated;
+    agents = std::move(other.agents);
+    g = other.g; //TODO check
+}
+
+// move assignment
+Session& Session::operator=(Session&& other){
+    treeType = other.treeType;
+    cycle = other.cycle;
+    parsedJson = other.parsedJson;
+    infectionQueue = other.infectionQueue;
+    notTerminated = other.notTerminated;
+    // empty the agents list before steal the list from other
+    if (!agents.empty()){
+        for (int i = 0; i < agents.size(); i++) {
+            if (agents[i])
+                delete agents[i];
+        }
+        agents.clear();
+    }
+    agents = std::move(other.agents);
+    g = other.g;
+    return *this;
 }
 
 void Session::simulate() {
@@ -27,6 +97,7 @@ void Session::simulate() {
         }
         terminationCheck(agentsSize);
     }
+    jsonOutput();
 }
 
 
@@ -42,7 +113,6 @@ void Session::terminationCheck(int &numOfAgents) {
 // update the infected node in graph and add new virus to agent list
 void Session::infectNode(int nodeInd) {
     g.infectNode(nodeInd);
-    addAgent(new Virus(nodeInd));
 }
 
 // return is the given node is infected
@@ -50,7 +120,7 @@ bool Session::isInfected(int nodeInd) const {
     return g.isInfected(nodeInd);
 }
 
-int Session::getLeftChildNotInf(int nodeInd) const {
+int Session::getLeftChildNotInf(int nodeInd) {
     return g.getLeftChildNotInf(nodeInd);
 }
 
@@ -81,9 +151,19 @@ void Session::enqueueInfected(int nId) {
 
 int Session::dequeueInfected() {
     if (!infectionQueue.empty()){
-        return infectionQueue.front();
+        int toRet = infectionQueue.front();
+        infectionQueue.pop_front();
+        return toRet;
     }
     return -1;
+}
+
+bool Session::infQIsEmpty() const {
+    return infectionQueue.empty();
+}
+
+Tree * Session::BFS(Session &session, int root) {
+    return g.BFS(session, root);
 }
 
 //getters
@@ -146,7 +226,13 @@ void Session::jsonOutput() {
     // infected queue under "infected": [array of all infected nodes]
     json output;
     output["graph"] = g.getEdges();
-    output["infected"] = getInfectionQueue();
+    // write to json file the infected nodes
+    vector<int> infectedToJson;
+    for (int i = 0; i < g.getInfectedVector().size(); i++) {
+        if (g.getInfectedVector()[i])
+            infectedToJson.push_back(i);
+    }
+    output["infected"] = infectedToJson;
     std::ofstream outpath("../jsons/outputs/output.json");
     outpath << output;
 }
@@ -155,4 +241,8 @@ void Session::isolateNode(int &node){
     g.isolateNode(node);
 }
 
-void Session::jsonPrint() {}
+void Session::copyAgents(const Session &other) {
+    for (std::vector<Agent*>::const_iterator it = other.agents.begin(); it != other.agents.end(); it++) {
+        addAgent(*(*it));
+    }
+}

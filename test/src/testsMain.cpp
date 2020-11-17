@@ -5,12 +5,12 @@
 #include "../include/TreeTests.h"
 #include "../include/SessionTests.h"
 
-int main(int argc, char** argv){
-
-    // run tests
-    //TreeTests T;
+//int main(int argc, char** argv){
+//
+//    // run tests
+//    //TreeTests T;
 //    SessionTests S;
-
-    TestMain::finish();
-    return 0;
-}
+//
+//    TestMain::finish();
+//    return 0;
+//}

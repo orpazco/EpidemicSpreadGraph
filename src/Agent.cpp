@@ -1,21 +1,23 @@
 #include "../include/Agent.h"
-#include "../include/Session.h"
-#include "../include/Tree.h"
 
-Agent::Agent() {}
 
 // Contact Tracer
 
 ContactTracer::ContactTracer() {}
+
+// destructor
+ContactTracer::~ContactTracer() {}
 
 Agent * ContactTracer::clone() const {
     return new ContactTracer(*this);
 }
 
 void ContactTracer::act(Session &session) {
-    Tree* tree = Tree::createTree(session, session.dequeueInfected()); // create a bfs tree
-    int toIsolate = tree->traceTree(); // get the node to isolate
-    session.isolateNode(toIsolate); // isolate the node
+    if(!session.infQIsEmpty()){
+        Tree* tree = session.BFS(session, session.dequeueInfected()); // create a bfs tree
+        int toIsolate = tree->traceTree(); // get the node to isolate
+        session.isolateNode(toIsolate); // isolate the node
+    }
 }
 
 int ContactTracer::canInfect(Session& session) {return -1;} // can never infect
@@ -29,6 +31,7 @@ void Virus::act(Session &session) {
     // add current node to infected queue if this node wasnt enqueue already
     if (!session.isInfected(getNodeInd())){
         session.enqueueInfected(getNodeInd());
+        session.infectNode(getNodeInd());
     }
 
     // spread the virus to the left most child
@@ -38,6 +41,11 @@ void Virus::act(Session &session) {
         // finish
     }
 }
+
+// destructor
+Virus::~Virus(){}
+
+Virus::Virus(const Virus &other): nodeInd(other.nodeInd) {}
 
 int Virus::getNodeInd() const {
     return nodeInd;

@@ -1,3 +1,4 @@
+#include <queue>
 #include "../include/Graph.h"
 using namespace std;
 // ctor
@@ -38,7 +39,7 @@ void Graph::infectNode(int nodeInd) {
     infectedNodesVector[nodeInd] = true;
 }
 
-bool Graph::isInfected(int nodeInd) const{
+bool Graph::isInfected(int nodeInd) const {
     return infectedNodesVector[nodeInd];
 }
 
@@ -46,11 +47,11 @@ const vector<bool> & Graph::getInfectedVector() const {
     return infectedNodesVector;
 }
 // get the most left child (the smallest) of the given node
-int Graph::getLeftChildNotInf(int nodeInd) const{
-    vector<int> nodeEdges = getEdges()[nodeInd];
-    for (int i = 0; i < nodeEdges.size(); i++) {
+int Graph::getLeftChildNotInf(int nodeInd) {
+    vector<int> *nodeEdges = (&(edges[nodeInd]));
+    for (int i = 0; i < nodeEdges->size(); i++) {
         // if the node isn't infected return the node id
-        if (i != nodeInd && !isInfected(nodeEdges[i])){
+        if (i != nodeInd && (*nodeEdges)[i] && !isInfected(i)){
             return i;
         }
     }
@@ -74,4 +75,41 @@ const std::vector<std::vector<int>> &Graph::getEdges() const {
     return edges;
 }
 
+Tree * Graph::BFS(Session &session, int root) {
+    // create empty tree
+   Tree *tree = Tree::createTree(session, root);
 
+   // initialize visited nodes vector
+   int edgesSize = getEdges().size();
+    vector<bool> visitedNodes(edgesSize);
+    for (int i = 0; i < edgesSize; i++) {
+        visitedNodes[i] = false;
+    }
+
+    std::queue<Tree*> queue;
+    // initialize queue and update visited root node
+    queue.push(tree);
+    visitedNodes[tree->getNode()] = true;
+
+    while (!queue.empty()){
+        // dequeue first node from queue
+        Tree* currNode = queue.front();
+        queue.pop();
+        // get vector of all the node neighbors and iterate them
+        vector<int> *neighbors = (&edges[currNode->getNode()]);
+        for (int i = 0; i < neighbors->size(); i++) {
+            if ((*neighbors)[i] && i != currNode->getNode()) {
+                // if we encounter node we hasnt visited already add this node to the returning tree,
+                // and also add this node to the queue for the next iterations
+                if(!visitedNodes[i]) {
+                    Tree *childNode = Tree::createTree(session, i);
+                    currNode->addChild(childNode);
+                    queue.push(childNode);
+                    // mark this node
+                    visitedNodes[i] = true;
+                }
+            }
+        }
+    }
+    return tree;
+}

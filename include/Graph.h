@@ -2,6 +2,8 @@
 #define GRAPH_H_
 
 #include <vector>
+#include "Tree.h"
+//#include "Session.h"
 
 class Graph{
 public:
@@ -16,9 +18,10 @@ public:
 
     Graph* clone() const;
     const std::vector<std::vector<int>> &getEdges() const;
-    int getLeftChildNotInf(int nodeInd) const;
+    int getLeftChildNotInf(int nodeInd);
     void isolateNode(int node);
     const std::vector<bool> & getInfectedVector() const;
+    Tree* BFS(Session &session, int root);
 
     // assignment op
     Graph& operator=(const Graph& other);

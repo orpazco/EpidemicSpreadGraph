@@ -6,10 +6,11 @@
 
 class Agent{
 public:
-    Agent();
-
     virtual void act(Session& session)=0;
     virtual Agent* clone() const=0;
+
+    // destructor
+    virtual ~Agent()=default;
     virtual int canInfect(Session& session) =0;
 };
 
@@ -19,6 +20,8 @@ public:
 
     virtual void act(Session& session);
     virtual Agent* clone() const;
+
+    virtual ~ContactTracer();
     virtual int canInfect(Session& session);
 };
 
@@ -27,9 +30,12 @@ public:
 class Virus: public Agent{
 public:
     Virus(int nodeInd);
-
     virtual void act(Session& session);
     virtual Agent* clone() const;
+    virtual ~Virus();
+    // copy ctor
+    Virus(const Virus& other);
+
     int getNodeInd() const;
     virtual int canInfect(Session& session);
 private:
