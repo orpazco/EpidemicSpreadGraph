@@ -23,7 +23,7 @@ void Graph::infectNode(int nodeInd) {
     infectedNodesVector[nodeInd] = true;
 }
 
-bool Graph::isInfected(int nodeInd) const{
+bool Graph::isInfected(int nodeInd) const {
     return infectedNodesVector[nodeInd];
 }
 
@@ -32,18 +32,18 @@ const vector<bool> & Graph::getInfectedVector() const {
 }
 
 // get the most left child (the smallest) of the given node
-int Graph::getLeftChildNotInf(int nodeInd) const{
-    vector<int> nodeEdges = getEdges()[nodeInd];
-    for (int i = 0; i < nodeEdges.size(); i++) {
+int Graph::getLeftChildNotInf(int nodeInd) {
+    vector<int> *nodeEdges = (&(edges[nodeInd]));
+    for (int i = 0; i < nodeEdges->size(); i++) {
         // if the node isn't infected return the node id
-        if (i != nodeInd && nodeEdges[i] && !isInfected(i)){
+        if (i != nodeInd && (*nodeEdges)[i] && !isInfected(i)){
             return i;
         }
     }
     return -1;
 }
 
-void Graph::isolateNode(int isoNode) { //TODO - keep neighbors in better data structure?
+void Graph::isolateNode(int isoNode) {
     for (int i = 0; i < getEdges().size() ; ++i) { // for every node in the graph, remove the edge to and from isoNode if exists
         removeEdge(isoNode, i);
     }
@@ -60,7 +60,7 @@ const std::vector<std::vector<int>> &Graph::getEdges() const {
     return edges;
 }
 
-Tree * Graph::BFS(Session &session, int root) const {
+Tree * Graph::BFS(Session &session, int root) {
     // create empty tree
    Tree *tree = Tree::createTree(session, root);
 
@@ -81,9 +81,9 @@ Tree * Graph::BFS(Session &session, int root) const {
         Tree* currNode = queue.front();
         queue.pop();
         // get vector of all the node neighbors and iterate them
-        vector<int> neighbors = getEdges()[currNode->getNode()];
-        for (int i = 0; i < neighbors.size(); i++) {
-            if (neighbors[i] && i != currNode->getNode()) {
+        vector<int> *neighbors = (&edges[currNode->getNode()]);
+        for (int i = 0; i < neighbors->size(); i++) {
+            if ((*neighbors)[i] && i != currNode->getNode()) {
                 // if we encounter node we hasnt visited already add this node to the returning tree,
                 // and also add this node to the queue for the next iterations
                 if(!visitedNodes[i]) {

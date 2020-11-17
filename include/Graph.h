@@ -16,10 +16,10 @@ public:
 
     Graph* clone() const;
     const std::vector<std::vector<int>> &getEdges() const;
-    int getLeftChildNotInf(int nodeInd) const;
+    int getLeftChildNotInf(int nodeInd);
     void isolateNode(int node);
     const std::vector<bool> & getInfectedVector() const;
-    Tree* BFS(Session &session, int root) const;
+    Tree* BFS(Session &session, int root);
 
 private:
     std::vector<std::vector<int>> edges;

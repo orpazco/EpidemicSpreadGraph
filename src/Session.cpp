@@ -9,7 +9,6 @@ Session::Session(const std::string &path) : cycle(0), notTerminated(true) {
     addParsedAgents(); // adds agents from the config
     setParsedTreeType(); // sets tree type according to config
     initGraph(); // inits graph according to config
-    //TODO finish
 }
 
 // destructor
@@ -27,8 +26,6 @@ void Session::clear(){
     }
     if (!parsedJson.empty())
         parsedJson.clear();
-    if (!infectionQueue.empty())
-        infectionQueue.clear();
 }
 
 // copy ctor
@@ -45,6 +42,7 @@ Session::Session(const Session& other) {
 // assignment
 Session& Session::operator=(const Session &other) {
      if (this != &other){
+         clear();
          treeType = other.treeType;
          cycle = other.cycle;
          parsedJson = other.parsedJson;
@@ -81,8 +79,8 @@ Session& Session::operator=(Session&& other){
                 delete agents[i];
         }
         agents.clear();
-        agents = std::move(other.agents);
     }
+    agents = std::move(other.agents);
     g = other.g;
     return *this;
 }
