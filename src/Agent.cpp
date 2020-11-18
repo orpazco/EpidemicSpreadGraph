@@ -38,7 +38,6 @@ void Virus::act(Session &session) {
     int toInfect = canInfect(session);
     if (toInfect != -1) {
         session.infectNode(toInfect);
-        // finish
     }
 }
 

@@ -113,6 +113,7 @@ void Session::terminationCheck(int &numOfAgents) {
 // update the infected node in graph and add new virus to agent list
 void Session::infectNode(int nodeInd) {
     g.infectNode(nodeInd);
+    addAgent(new Virus(nodeInd));
 }
 
 // return is the given node is infected
@@ -233,7 +234,7 @@ void Session::jsonOutput() {
             infectedToJson.push_back(i);
     }
     output["infected"] = infectedToJson;
-    std::ofstream outpath("../jsons/outputs/output.json");
+    std::ofstream outpath("output.json");
     outpath << output;
 }
 
