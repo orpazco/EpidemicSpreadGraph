@@ -38,8 +38,13 @@ public:
 
     int getNodeInd() const;
     virtual int canInfect(Session& session);
+    bool isDormant() const;
+    void setDormant(bool dormant);
+
 private:
     const int nodeInd;
+    bool dormant;
+
 };
 
 #endif

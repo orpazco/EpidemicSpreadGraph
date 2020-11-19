@@ -9,7 +9,7 @@ int main(int argc, char** argv){
 //        cout << "usage cTrace <config_path>" << endl;
 //        return 0;
 //    }
-    Session s("../jsons/examples/config1.json");
+    Session s("../jsons/examples/config3.json");
     s.simulate();
     return 0;
 

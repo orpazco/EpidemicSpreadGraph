@@ -2,23 +2,25 @@
 #include "../include/Graph.h"
 using namespace std;
 // ctor
-Graph::Graph(vector<vector<int>> matrix): edges(std::move(matrix)), infectedNodesVector({}){
+Graph::Graph(vector<vector<int>> matrix): edges(std::move(matrix)), infectedNodesVector({}), spreadNodesVector({}){
     infectedNodesVector.resize(edges.size());
+    spreadNodesVector.resize(edges.size());
 }
 
 // copy ctor
 Graph::Graph(const Graph &other)
-        : edges(other.edges), infectedNodesVector(other.infectedNodesVector){}
+        : edges(other.edges), infectedNodesVector(other.infectedNodesVector), spreadNodesVector(other.spreadNodesVector){}
 
 // move ctor
 Graph::Graph(Graph &&other)
-        :edges(other.edges), infectedNodesVector(other.infectedNodesVector)  {
+        :edges(other.edges), infectedNodesVector(other.infectedNodesVector), spreadNodesVector(other.spreadNodesVector)  {
 }
 
 // assignment op
 Graph& Graph::operator=(const Graph &other) {
     edges = other.edges;
     infectedNodesVector = other.infectedNodesVector;
+    spreadNodesVector = other.spreadNodesVector; //TODO endless loop
     return *this;
 }
 
@@ -26,6 +28,7 @@ Graph& Graph::operator=(const Graph &other) {
 Graph& Graph::operator=(Graph &&other) {
     if (this!=&other){
         infectedNodesVector = other.infectedNodesVector;
+        spreadNodesVector = other.spreadNodesVector;
         edges = other.edges;
     }
     return *this;
@@ -43,6 +46,14 @@ bool Graph::isInfected(int nodeInd) const {
     return infectedNodesVector[nodeInd];
 }
 
+void Graph::spreadToNode(int nodeInd) {
+    spreadNodesVector[nodeInd] = true;
+}
+
+bool Graph::isSpreaded(int nodeInd) const {
+    return spreadNodesVector[nodeInd];
+}
+
 const vector<bool> & Graph::getInfectedVector() const {
     return infectedNodesVector;
 }
@@ -51,7 +62,7 @@ int Graph::getLeftChildNotInf(int nodeInd) {
     vector<int> *nodeEdges = (&(edges[nodeInd]));
     for (int i = 0; i < nodeEdges->size(); i++) {
         // if the node isn't infected return the node id
-        if (i != nodeInd && (*nodeEdges)[i] && !isInfected(i)){
+        if (i != nodeInd && (*nodeEdges)[i] && !isInfected(i) && !isSpreaded(i)){
             return i;
         }
     }
