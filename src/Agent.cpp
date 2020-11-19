@@ -24,7 +24,7 @@ int ContactTracer::canInfect(Session& session) {return -1;} // can never infect
 
 // Virus
 
-Virus::Virus(int nodeInd): nodeInd(nodeInd) {}
+Virus::Virus(int nodeInd): nodeInd(nodeInd), dormant(true) {}
 
 void Virus::act(Session &session) {
 
@@ -37,14 +37,14 @@ void Virus::act(Session &session) {
     // spread the virus to the left most child
     int toInfect = canInfect(session);
     if (toInfect != -1) {
-        session.infectNode(toInfect);
+        session.spreadToNode(toInfect);
     }
 }
 
 // destructor
 Virus::~Virus(){}
 
-Virus::Virus(const Virus &other): nodeInd(other.nodeInd) {}
+Virus::Virus(const Virus &other): nodeInd(other.nodeInd) , dormant(other.dormant){}
 
 int Virus::getNodeInd() const {
     return nodeInd;
@@ -57,4 +57,12 @@ Agent * Virus::clone() const {
 int Virus::canInfect(Session& session) {
     int leftChild = session.getLeftChildNotInf(getNodeInd()); // return the node id of the next node this virus can infect
     return leftChild;
+}
+
+bool Virus::isDormant() const {
+    return dormant;
+}
+
+void Virus::setDormant(bool dormant) {
+    Virus::dormant = dormant;
 }
