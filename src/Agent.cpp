@@ -24,7 +24,7 @@ int ContactTracer::canInfect(Session& session) {return -1;} // can never infect
 
 // Virus
 
-Virus::Virus(int nodeInd): nodeInd(nodeInd), dormant(true) {}
+Virus::Virus(int nodeInd): nodeInd(nodeInd), dormant(true) {} //TODO - remove dormant
 
 void Virus::act(Session &session) {
 
