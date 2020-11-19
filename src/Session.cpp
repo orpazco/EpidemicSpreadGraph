@@ -1,8 +1,12 @@
 #include <fstream>
 #include <iostream>
+#include <sstream> //TODO: delete from prod
 #include "../include/Session.h"
 #include "../include/Agent.h"
+
 using namespace std;
+
+bool debug = false;
 
 Session::Session(const std::string &path): cycle(0), notTerminated(true), g({}), parsedJson({}), infectionQueue({}), agents({}) {
     jsonInit(path); // initializes config Json
@@ -34,7 +38,7 @@ Session::Session(const Session& other): g({}), parsedJson({}), infectionQueue({}
     copyAgents(other);
     treeType = other.treeType;
     cycle = other.cycle;
-    parsedJson = other.parsedJson; //TODO: test deep copy
+    parsedJson = other.parsedJson;
     infectionQueue = other.infectionQueue;
     notTerminated = other.notTerminated;
 }
@@ -62,7 +66,7 @@ Session::Session(Session&& other): g({}), parsedJson({}), infectionQueue({}), ag
     infectionQueue = other.infectionQueue;
     notTerminated = other.notTerminated;
     agents = std::move(other.agents);
-    g = other.g; //TODO check
+    g = other.g;
 }
 
 // move assignment
@@ -86,6 +90,10 @@ Session& Session::operator=(Session&& other){
 }
 
 void Session::simulate() {
+    //----------------------------------------
+    if (debug)
+        drawGraph(); //TODO: delete from prod
+    //----------------------------------------
     while (notTerminated){
         cycle++;
         notTerminated = false;
@@ -94,6 +102,10 @@ void Session::simulate() {
         for (int i = 0; i < agentsSize; i++) {
             // activate each agent
             getAgents()[i]->act(*this);
+            //----------------------------------------
+            if (debug)
+                drawGraph(); //TODO delete from prod
+            //----------------------------------------
         }
         terminationCheck();
     }
@@ -103,10 +115,15 @@ void Session::simulate() {
 
 void Session::terminationCheck() {
     for (int i = 0; i < agents.size(); i++) { // out of all active agents (not carrier nodes)
-        // activate each agent
-        int node = getAgents()[i]->canInfect(*this); // canInfect returns the node id the virus will infect in the next cycle
-        if (node!=-1)// returns any node at all TODO - add check if node is not infected itself
+        Agent *agent = getAgents()[i];
+        if (agent->canInfectSelf(*this) != -1) {
             notTerminated = true;
+        } else {
+            // activate each agent
+            int node = agent->canInfect(*this); // canInfect returns the node id the virus will infect in the next cycle
+            if (node != -1)// returns any node at all
+                notTerminated = true;
+        }
     }
 }
 
@@ -123,6 +140,10 @@ void Session::spreadToNode(int nodeInd) {
 // return is the given node is infected
 bool Session::isInfected(int nodeInd) const {
     return g.isInfected(nodeInd);
+}
+
+bool Session::isSpreadTo(int nodeInd) {
+    return g.isSpreadTo(nodeInd);
 }
 
 int Session::getLeftChildNotInf(int nodeInd) {
@@ -204,7 +225,7 @@ void Session::jsonInit(const string &path) {
 }
 
 void Session::setParsedTreeType() {
-   std::string type=parsedJson["tree"].get<std::string>(); //TODO - handle json errors
+   std::string type=parsedJson["tree"].get<std::string>();
    if (type=="R") setTreeType(Root);
    else if (type=="C") setTreeType(Cycle);
    else if (type=="M") setTreeType(MaxRank);
@@ -252,4 +273,35 @@ void Session::copyAgents(const Session &other) {
     for (std::vector<Agent*>::const_iterator it = other.agents.begin(); it != other.agents.end(); it++) {
         addAgent(*(*it));
     }
+}
+
+void Session::drawGraph() {
+    cout << "cycle: " << cycle;
+
+    ostringstream str;
+    str << "graph foo {" << endl;
+    const vector<vector<int>>& edges = g.getEdges();
+    for (int i = 0; i < edges.size(); ++i) {
+        for (int j = i; j < edges.size(); ++j) {
+            if (edges[i][j] == 1)
+                str << "    " << i << "--" << j << ";" << endl;
+        }
+        str << "    " << i << "[style=filled];" << endl;
+        if (g.isInfected(i)) {
+            str << "    " << i << "[fillcolor=red];" << endl;
+        } else if (g.isSpreadTo(i)) { // Implement this method somehow
+            str << "    " << i << "[fillcolor=yellow];" << endl;
+        }
+    }
+    str << "}";
+
+    ofstream myfile;
+    myfile.open ("../graph_foo.txt");
+    myfile << str.str();;
+    myfile.close();
+
+    system("circo -Tpng C:\\Orpaz\\Study\\Projects\\EpidemicSpreadGraph\\graph_foo.txt -o output.png && output.png"); // make sure "circo" is PATH
+    cout << "Press enter to close the image and continue";
+    cin.ignore();
+    system(R"("TASKKILL /F /IM microsoft.photos.exe")");
 }

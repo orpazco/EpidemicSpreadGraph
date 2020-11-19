@@ -12,11 +12,11 @@ public:
     // copy ctor
     Graph(const Graph& other);
     // setters
-
     void infectNode(int nodeInd);
     void spreadToNode(int nodeInd);
+
     bool isInfected(int nodeInd) const;
-    bool isSpreaded(int nodeInd) const;
+    bool isSpreadTo(int nodeInd) const;
 
     Graph* clone() const;
     const std::vector<std::vector<int>> &getEdges() const;
