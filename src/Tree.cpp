@@ -190,7 +190,7 @@ int MaxRankTree::traceTree() {
 
 
 void MaxRankTree::findMaxRank(int* currMax, int* currMaxDepth , int depth, std::vector<Tree*>* nodes)  {
-    int currRank = getChildren().size(); //TODO-make currmax and currmaxdepth reachable outside recursion
+    int currRank = getChildren().size();
     if (currRank>=*currMax){
         if(currRank>*currMax || depth<*currMaxDepth){
             *currMax = currRank;
@@ -202,7 +202,7 @@ void MaxRankTree::findMaxRank(int* currMax, int* currMaxDepth , int depth, std::
     }
     for(int i=0; i<getChildren().size(); i++) {
         MaxRankTree* tree = (MaxRankTree*)(getChildren()[i]);
-        tree->findMaxRank(currMax, currMaxDepth, depth+1, nodes); //check children for candidates //TODO - fix this - return nodes as new
+        tree->findMaxRank(currMax, currMaxDepth, depth+1, nodes); //check children for candidates
     }
 }
 

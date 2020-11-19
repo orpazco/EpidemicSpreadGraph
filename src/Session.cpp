@@ -34,7 +34,7 @@ Session::Session(const Session& other): g({}), parsedJson({}), infectionQueue({}
     copyAgents(other);
     treeType = other.treeType;
     cycle = other.cycle;
-    parsedJson = other.parsedJson; //TODO: test deep copy
+    parsedJson = other.parsedJson;
     infectionQueue = other.infectionQueue;
     notTerminated = other.notTerminated;
 }
@@ -62,7 +62,7 @@ Session::Session(Session&& other): g({}), parsedJson({}), infectionQueue({}), ag
     infectionQueue = other.infectionQueue;
     notTerminated = other.notTerminated;
     agents = std::move(other.agents);
-    g = other.g; //TODO check
+    g = other.g;
 }
 
 // move assignment
@@ -199,7 +199,7 @@ void Session::jsonInit(const string &path) {
 }
 
 void Session::setParsedTreeType() {
-   std::string type=parsedJson["tree"].get<std::string>(); //TODO - handle json errors
+   std::string type=parsedJson["tree"].get<std::string>();
    if (type=="R") setTreeType(Root);
    else if (type=="C") setTreeType(Cycle);
    else if (type=="M") setTreeType(MaxRank);
