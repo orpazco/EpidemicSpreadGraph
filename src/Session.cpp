@@ -235,8 +235,8 @@ void Session::addParsedAgents() {
     json& agents=parsedJson["agents"];
     for (int i = 0; i < agents.size(); ++i) { // iterate over agents section
         if(agents[i][0]=="V") {
-            //infectNode(agents[i][1]); // create a new virus using the entry
-            addAgent(new Virus(agents[i][1])); // create a new virus using the entry - pass by pointer
+            // create a new virus using the entry
+            spreadToNode(agents[i][1]);
         }
         else if(agents[i][0]=="C")
             addAgent(new ContactTracer()); // create a new CT pass by pointer
