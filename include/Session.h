@@ -51,6 +51,7 @@ public:
     TreeType getTreeType() const;
     const std::vector<Agent*> & getAgents() const;
     void isolateNode(int &node);
+    void spreadToNode(int nodeInd);
 
 private:
     Graph g;
@@ -60,7 +61,7 @@ private:
     json parsedJson;
     std::deque<int> infectionQueue;
     bool notTerminated;
-    void terminationCheck(int& numOfAgents);
+    void terminationCheck();
     const std::deque<int> &getInfectionQueue() const;
     void jsonOutput();
     void addParsedAgents();

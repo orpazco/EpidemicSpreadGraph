@@ -14,7 +14,9 @@ public:
     // setters
 
     void infectNode(int nodeInd);
+    void spreadToNode(int nodeInd);
     bool isInfected(int nodeInd) const;
+    bool isSpreaded(int nodeInd) const;
 
     Graph* clone() const;
     const std::vector<std::vector<int>> &getEdges() const;
@@ -33,6 +35,7 @@ public:
 private:
     std::vector<std::vector<int>> edges;
     std::vector<bool> infectedNodesVector;
+    std::vector<bool> spreadNodesVector;
     void removeEdge(int sourceNode, int destinationNode);
 };
 
