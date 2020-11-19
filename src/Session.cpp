@@ -1,7 +1,9 @@
 #include <fstream>
 #include <iostream>
+#include <sstream> //TODO: delete from prod
 #include "../include/Session.h"
 #include "../include/Agent.h"
+
 using namespace std;
 
 Session::Session(const std::string &path): cycle(0), notTerminated(true), g({}), parsedJson({}), infectionQueue({}), agents({}) {
@@ -86,6 +88,7 @@ Session& Session::operator=(Session&& other){
 }
 
 void Session::simulate() {
+    drawGraph(); //TODO: delete from prod
     while (notTerminated){
         cycle++;
         notTerminated = false;
@@ -94,6 +97,7 @@ void Session::simulate() {
         for (int i = 0; i < agentsSize; i++) {
             // activate each agent
             getAgents()[i]->act(*this);
+            drawGraph(); //TODO delete from prod
         }
         terminationCheck();
     }
@@ -130,8 +134,8 @@ bool Session::isInfected(int nodeInd) const {
     return g.isInfected(nodeInd);
 }
 
-bool Session::isSpreaded(int nodeInd) {
-    return g.isSpreaded(nodeInd);
+bool Session::isSpreadTo(int nodeInd) {
+    return g.isSpreadTo(nodeInd);
 }
 
 int Session::getLeftChildNotInf(int nodeInd) {
@@ -261,4 +265,35 @@ void Session::copyAgents(const Session &other) {
     for (std::vector<Agent*>::const_iterator it = other.agents.begin(); it != other.agents.end(); it++) {
         addAgent(*(*it));
     }
+}
+
+void Session::drawGraph() {
+    cout << "cycle: " << cycle;
+
+    ostringstream str;
+    str << "graph foo {" << endl;
+    const vector<vector<int>>& edges = g.getEdges();
+    for (int i = 0; i < edges.size(); ++i) {
+        for (int j = i; j < edges.size(); ++j) {
+            if (edges[i][j] == 1)
+                str << "    " << i << "--" << j << ";" << endl;
+        }
+        str << "    " << i << "[style=filled];" << endl;
+        if (g.isInfected(i)) {
+            str << "    " << i << "[fillcolor=red];" << endl;
+        } else if (g.isSpreadTo(i)) { // Implement this method somehow
+            str << "    " << i << "[fillcolor=yellow];" << endl;
+        }
+    }
+    str << "}";
+
+    ofstream myfile;
+    myfile.open ("../graph_foo.txt");
+    myfile << str.str();;
+    myfile.close();
+
+    system("circo -Tpng C:\\Orpaz\\Study\\Projects\\EpidemicSpreadGraph\\graph_foo.txt -o output.png && output.png"); // make sure "circo" is PATH
+    cout << "Press enter to close the image and continue";
+    cin.ignore();
+    system(R"("TASKKILL /F /IM microsoft.photos.exe")");
 }

@@ -16,7 +16,7 @@ public:
     void spreadToNode(int nodeInd);
 
     bool isInfected(int nodeInd) const;
-    bool isSpreaded(int nodeInd) const;
+    bool isSpreadTo(int nodeInd) const;
 
     Graph* clone() const;
     const std::vector<std::vector<int>> &getEdges() const;
