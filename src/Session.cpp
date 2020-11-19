@@ -6,6 +6,8 @@
 
 using namespace std;
 
+bool debug = false;
+
 Session::Session(const std::string &path): cycle(0), notTerminated(true), g({}), parsedJson({}), infectionQueue({}), agents({}) {
     jsonInit(path); // initializes config Json
     initGraph(); // inits graph according to config
@@ -88,7 +90,10 @@ Session& Session::operator=(Session&& other){
 }
 
 void Session::simulate() {
-    drawGraph(); //TODO: delete from prod
+    //----------------------------------------
+    if (debug)
+        drawGraph(); //TODO: delete from prod
+    //----------------------------------------
     while (notTerminated){
         cycle++;
         notTerminated = false;
@@ -97,7 +102,10 @@ void Session::simulate() {
         for (int i = 0; i < agentsSize; i++) {
             // activate each agent
             getAgents()[i]->act(*this);
-            drawGraph(); //TODO delete from prod
+            //----------------------------------------
+            if (debug)
+                drawGraph(); //TODO delete from prod
+            //----------------------------------------
         }
         terminationCheck();
     }
