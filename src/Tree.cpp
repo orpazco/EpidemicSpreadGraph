@@ -142,7 +142,7 @@ const CycleTree & CycleTree::operator=(CycleTree &&other){ //why is this const?
 }
 
 int CycleTree::traceTree() {
-    int counter = 0;
+    int counter = 1;
     return traceTree(counter);
 }
 

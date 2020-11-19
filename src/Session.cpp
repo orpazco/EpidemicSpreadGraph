@@ -105,7 +105,7 @@ void Session::terminationCheck() {
     for (int i = 0; i < agents.size(); i++) { // out of all active agents (not carrier nodes)
         // activate each agent
         int node = getAgents()[i]->canInfect(*this); // canInfect returns the node id the virus will infect in the next cycle
-        if (node!=-1)// returns any node at all
+        if (node!=-1)// returns any node at all TODO - add check if node is not infected itself
             notTerminated = true;
     }
 }
@@ -113,7 +113,6 @@ void Session::terminationCheck() {
 // update the infected node in graph and add new virus to agent list
 void Session::infectNode(int nodeInd) {
     g.infectNode(nodeInd);
-    addAgent(new Virus(nodeInd));
 }
 
 void Session::spreadToNode(int nodeInd) {
