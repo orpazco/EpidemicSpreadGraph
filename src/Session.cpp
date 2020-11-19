@@ -6,9 +6,9 @@ using namespace std;
 
 Session::Session(const std::string &path): cycle(0), notTerminated(true), g({}), parsedJson({}), infectionQueue({}), agents({}) {
     jsonInit(path); // initializes config Json
+    initGraph(); // inits graph according to config
     addParsedAgents(); // adds agents from the config
     setParsedTreeType(); // sets tree type according to config
-    initGraph(); // inits graph according to config
 }
 
 // destructor
@@ -95,18 +95,23 @@ void Session::simulate() {
             // activate each agent
             getAgents()[i]->act(*this);
         }
-        terminationCheck(agentsSize);
+        terminationCheck();
     }
     jsonOutput();
 }
 
 
-void Session::terminationCheck(int &numOfAgents) {
-    for (int i = 0; i < numOfAgents; i++) { // out of all active agents (not carrier nodes)
-        // activate each agent
-        int node = getAgents()[i]->canInfect(*this); // canInfect returns the node id the virus will infect in the next cycle
-        if (node!=-1)// returns any node at all
+void Session::terminationCheck() {
+    for (int i = 0; i < agents.size(); i++) { // out of all active agents (not carrier nodes)
+        Agent *agent = getAgents()[i];
+        if (agent->canInfectSelf(*this) != -1) {
             notTerminated = true;
+        } else {
+            // activate each agent
+            int node = agent->canInfect(*this); // canInfect returns the node id the virus will infect in the next cycle
+            if (node != -1)// returns any node at all
+                notTerminated = true;
+        }
     }
 }
 
@@ -115,9 +120,18 @@ void Session::infectNode(int nodeInd) {
     g.infectNode(nodeInd);
 }
 
+void Session::spreadToNode(int nodeInd) {
+    addAgent(new Virus(nodeInd));
+    g.spreadToNode(nodeInd);
+}
+
 // return is the given node is infected
 bool Session::isInfected(int nodeInd) const {
     return g.isInfected(nodeInd);
+}
+
+bool Session::isSpreaded(int nodeInd) {
+    return g.isSpreaded(nodeInd);
 }
 
 int Session::getLeftChildNotInf(int nodeInd) {
@@ -208,8 +222,10 @@ void Session::setParsedTreeType() {
 void Session::addParsedAgents() {
     json& agents=parsedJson["agents"];
     for (int i = 0; i < agents.size(); ++i) { // iterate over agents section
-        if(agents[i][0]=="V")
+        if(agents[i][0]=="V") {
+            //infectNode(agents[i][1]); // create a new virus using the entry
             addAgent(new Virus(agents[i][1])); // create a new virus using the entry - pass by pointer
+        }
         else if(agents[i][0]=="C")
             addAgent(new ContactTracer()); // create a new CT pass by pointer
     }
@@ -233,7 +249,7 @@ void Session::jsonOutput() {
             infectedToJson.push_back(i);
     }
     output["infected"] = infectedToJson;
-    std::ofstream outpath("../jsons/outputs/output.json");
+    std::ofstream outpath("output.json");
     outpath << output;
 }
 

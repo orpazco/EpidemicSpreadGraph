@@ -1,0 +1,1 @@
+valgrind --leak-check=full --show-reachable=yes bin/cTrace ../jsons/examples/config1.json

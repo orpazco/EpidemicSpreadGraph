@@ -147,6 +147,7 @@ int CycleTree::traceTree() {
 }
 
 int CycleTree::traceTree(int &counter) {
+    counter++;
     // if there is no children return this
     if (getChildren().empty()) {
         return getNode();
@@ -158,7 +159,6 @@ int CycleTree::traceTree(int &counter) {
         CycleTree* leftChild = (CycleTree*)findLeftChild(getChildren());
 
         // return the most left child of the sub-tree
-        counter++;
         return leftChild->traceTree(counter);
     }
 }
