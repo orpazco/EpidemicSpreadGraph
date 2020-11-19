@@ -105,7 +105,7 @@ void Session::terminationCheck() {
     for (int i = 0; i < agents.size(); i++) { // out of all active agents (not carrier nodes)
         // activate each agent
         int node = getAgents()[i]->canInfect(*this); // canInfect returns the node id the virus will infect in the next cycle
-        if (node!=-1)// returns any node at all
+        if (node!=-1)// returns any node at all TODO - add check if node is not infected itself
             notTerminated = true;
     }
 }
