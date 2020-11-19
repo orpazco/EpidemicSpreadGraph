@@ -20,7 +20,7 @@ Graph::Graph(Graph &&other)
 Graph& Graph::operator=(const Graph &other) {
     edges = other.edges;
     infectedNodesVector = other.infectedNodesVector;
-    spreadNodesVector = other.spreadNodesVector; //TODO endless loop
+    spreadNodesVector = other.spreadNodesVector;
     return *this;
 }
 

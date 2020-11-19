@@ -34,7 +34,7 @@ Session::Session(const Session& other): g({}), parsedJson({}), infectionQueue({}
     copyAgents(other);
     treeType = other.treeType;
     cycle = other.cycle;
-    parsedJson = other.parsedJson; //TODO: test deep copy
+    parsedJson = other.parsedJson;
     infectionQueue = other.infectionQueue;
     notTerminated = other.notTerminated;
 }
@@ -62,7 +62,7 @@ Session::Session(Session&& other): g({}), parsedJson({}), infectionQueue({}), ag
     infectionQueue = other.infectionQueue;
     notTerminated = other.notTerminated;
     agents = std::move(other.agents);
-    g = other.g; //TODO check
+    g = other.g;
 }
 
 // move assignment
@@ -103,10 +103,15 @@ void Session::simulate() {
 
 void Session::terminationCheck() {
     for (int i = 0; i < agents.size(); i++) { // out of all active agents (not carrier nodes)
-        // activate each agent
-        int node = getAgents()[i]->canInfect(*this); // canInfect returns the node id the virus will infect in the next cycle
-        if (node!=-1)// returns any node at all TODO - add check if node is not infected itself
+        Agent *agent = getAgents()[i];
+        if (agent->canInfectSelf(*this) != -1) {
             notTerminated = true;
+        } else {
+            // activate each agent
+            int node = agent->canInfect(*this); // canInfect returns the node id the virus will infect in the next cycle
+            if (node != -1)// returns any node at all
+                notTerminated = true;
+        }
     }
 }
 
@@ -123,6 +128,10 @@ void Session::spreadToNode(int nodeInd) {
 // return is the given node is infected
 bool Session::isInfected(int nodeInd) const {
     return g.isInfected(nodeInd);
+}
+
+bool Session::isSpreaded(int nodeInd) {
+    return g.isSpreaded(nodeInd);
 }
 
 int Session::getLeftChildNotInf(int nodeInd) {
@@ -204,7 +213,7 @@ void Session::jsonInit(const string &path) {
 }
 
 void Session::setParsedTreeType() {
-   std::string type=parsedJson["tree"].get<std::string>(); //TODO - handle json errors
+   std::string type=parsedJson["tree"].get<std::string>();
    if (type=="R") setTreeType(Root);
    else if (type=="C") setTreeType(Cycle);
    else if (type=="M") setTreeType(MaxRank);

@@ -12,9 +12,9 @@ public:
     // copy ctor
     Graph(const Graph& other);
     // setters
-
     void infectNode(int nodeInd);
     void spreadToNode(int nodeInd);
+
     bool isInfected(int nodeInd) const;
     bool isSpreaded(int nodeInd) const;
 

@@ -1,6 +1,5 @@
 #include "../include/Agent.h"
 
-
 // Contact Tracer
 
 ContactTracer::ContactTracer() {}
@@ -21,10 +20,11 @@ void ContactTracer::act(Session &session) {
 }
 
 int ContactTracer::canInfect(Session& session) {return -1;} // can never infect
+int ContactTracer::canInfectSelf(Session &session) {return -1;}
 
 // Virus
 
-Virus::Virus(int nodeInd): nodeInd(nodeInd), dormant(true) {} //TODO - remove dormant
+Virus::Virus(int nodeInd): nodeInd(nodeInd){}
 
 void Virus::act(Session &session) {
 
@@ -44,7 +44,7 @@ void Virus::act(Session &session) {
 // destructor
 Virus::~Virus(){}
 
-Virus::Virus(const Virus &other): nodeInd(other.nodeInd) , dormant(other.dormant){}
+Virus::Virus(const Virus &other): nodeInd(other.nodeInd){}
 
 int Virus::getNodeInd() const {
     return nodeInd;
@@ -59,10 +59,9 @@ int Virus::canInfect(Session& session) {
     return leftChild;
 }
 
-bool Virus::isDormant() const {
-    return dormant;
-}
-
-void Virus::setDormant(bool dormant) {
-    Virus::dormant = dormant;
+int Virus::canInfectSelf(Session &session) {
+    if (!session.isInfected(nodeInd)){
+        return getNodeInd();
+    }
+    return -1;
 }

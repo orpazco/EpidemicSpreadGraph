@@ -45,6 +45,7 @@ public:
     void infectNode(int nodeInd);
     bool isInfected(int nodeInd) const;
     bool infQIsEmpty() const;
+    bool isSpreaded(int nodeInd);
     Tree* BFS(Session &session, int root);
     int getLeftChildNotInf(const int nodeInd);
     int getCycle() const;
@@ -60,6 +61,7 @@ private:
     int cycle;
     json parsedJson;
     std::deque<int> infectionQueue;
+
     bool notTerminated;
     void terminationCheck();
     const std::deque<int> &getInfectionQueue() const;
