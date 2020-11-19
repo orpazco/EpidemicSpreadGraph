@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include "Tree.h"
-#include "json.hpp"
+#include "../../include/Tree.h"
+#include "../../include/json.hpp"
 
 #define JSON_PATH "output.json"
 
