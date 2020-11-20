@@ -5,7 +5,6 @@
 
 using namespace std;
 
-bool debug = false;
 
 Session::Session(const std::string &path): g({}), treeType(), agents({}), cycle(0), parsedJson({}), infectionQueue({}) {
     jsonInit(path); // initializes config Json
