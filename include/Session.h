@@ -45,7 +45,7 @@ public:
     void infectNode(int nodeInd);
     bool isInfected(int nodeInd) const;
     bool infQIsEmpty() const;
-    bool isSpreaded(int nodeInd);
+    bool isSpreadTo(int nodeInd);
     Tree* BFS(Session &session, int root);
     int getLeftChildNotInf(const int nodeInd);
     int getCycle() const;
@@ -53,6 +53,8 @@ public:
     const std::vector<Agent*> & getAgents() const;
     void isolateNode(int &node);
     void spreadToNode(int nodeInd);
+
+    void drawGraph(); //TODO: delete from prod
 
 private:
     Graph g;

@@ -50,7 +50,7 @@ void Graph::spreadToNode(int nodeInd) {
     spreadNodesVector[nodeInd] = true;
 }
 
-bool Graph::isSpreaded(int nodeInd) const {
+bool Graph::isSpreadTo(int nodeInd) const {
     return spreadNodesVector[nodeInd];
 }
 
@@ -62,7 +62,7 @@ int Graph::getLeftChildNotInf(int nodeInd) {
     vector<int> *nodeEdges = (&(edges[nodeInd]));
     for (int i = 0; i < nodeEdges->size(); i++) {
         // if the node isn't infected return the node id
-        if (i != nodeInd && (*nodeEdges)[i] && !isInfected(i) && !isSpreaded(i)){
+        if (i != nodeInd && (*nodeEdges)[i] && !isInfected(i) && !isSpreadTo(i)){
             return i;
         }
     }
