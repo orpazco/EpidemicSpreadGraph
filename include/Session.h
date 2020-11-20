@@ -62,8 +62,7 @@ private:
     json parsedJson;
     std::deque<int> infectionQueue;
 
-    bool notTerminated;
-    void terminationCheck();
+    bool notTerminated();
     const std::deque<int> &getInfectionQueue() const;
     void jsonOutput();
     void addParsedAgents();
