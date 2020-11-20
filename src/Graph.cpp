@@ -60,7 +60,8 @@ const vector<bool> & Graph::getInfectedVector() const {
 // get the most left child (the smallest) of the given node
 int Graph::getLeftChildNotInf(int nodeInd) {
     vector<int> *nodeEdges = (&(edges[nodeInd]));
-    for (int i = 0; i < nodeEdges->size(); i++) {
+    int size = nodeEdges->size();
+    for (int i = 0; i < size; i++) {
         // if the node isn't infected return the node id
         if (i != nodeInd && (*nodeEdges)[i] && !isInfected(i) && !isSpreadTo(i)){
             return i;
@@ -70,7 +71,7 @@ int Graph::getLeftChildNotInf(int nodeInd) {
 }
 
 void Graph::isolateNode(int isoNode) {
-    for (int i = 0; i < getEdges().size() ; ++i) { // for every node in the graph, remove the edge to and from isoNode if exists
+    for (int i = 0; i < (int)getEdges().size() ; ++i) { // for every node in the graph, remove the edge to and from isoNode if exists
         removeEdge(isoNode, i);
     }
 }
@@ -108,7 +109,7 @@ Tree * Graph::BFS(Session &session, int root) {
         queue.pop();
         // get vector of all the node neighbors and iterate them
         vector<int> *neighbors = (&edges[currNode->getNode()]);
-        for (int i = 0; i < neighbors->size(); i++) {
+        for (int i = 0; i < (int)neighbors->size(); i++) {
             if ((*neighbors)[i] && i != currNode->getNode()) {
                 // if we encounter node we hasnt visited already add this node to the returning tree,
                 // and also add this node to the queue for the next iterations
