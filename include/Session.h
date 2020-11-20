@@ -54,8 +54,6 @@ public:
     void isolateNode(int &node);
     void spreadToNode(int nodeInd);
 
-    void drawGraph(); //TODO: delete from prod
-
 private:
     Graph g;
     TreeType treeType;
