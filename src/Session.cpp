@@ -6,7 +6,7 @@
 
 using namespace std;
 
-bool debug = false;
+bool debug = true; //TODO delete
 
 Session::Session(const std::string &path): cycle(0), notTerminated(true), g({}), parsedJson({}), infectionQueue({}), agents({}) {
     jsonInit(path); // initializes config Json
@@ -235,8 +235,8 @@ void Session::addParsedAgents() {
     json& agents=parsedJson["agents"];
     for (int i = 0; i < agents.size(); ++i) { // iterate over agents section
         if(agents[i][0]=="V") {
-            //infectNode(agents[i][1]); // create a new virus using the entry
-            addAgent(new Virus(agents[i][1])); // create a new virus using the entry - pass by pointer
+            // create a new virus using the entry
+            spreadToNode(agents[i][1]);
         }
         else if(agents[i][0]=="C")
             addAgent(new ContactTracer()); // create a new CT pass by pointer
@@ -300,7 +300,7 @@ void Session::drawGraph() {
     myfile << str.str();;
     myfile.close();
 
-    system("circo -Tpng C:\\Orpaz\\Study\\Projects\\EpidemicSpreadGraph\\graph_foo.txt -o output.png && output.png"); // make sure "circo" is PATH
+    system("circo -Tpng ../graph_foo.txt -o output.png && output.png"); // make sure "circo" is PATH
     cout << "Press enter to close the image and continue";
     cin.ignore();
     system(R"("TASKKILL /F /IM microsoft.photos.exe")");
