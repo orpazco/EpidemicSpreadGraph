@@ -23,6 +23,7 @@ public:
 
     //dstrctr
     virtual ~Tree();
+    void clear();
   
     //getters
     const int& getNode() const ;
@@ -45,8 +46,6 @@ private:
 
 protected:
     void copyChildren(const Tree &other);
-    void clear();
-    
 };
 
 class CycleTree: public Tree{
