@@ -54,8 +54,6 @@ public:
     void isolateNode(int &node);
     void spreadToNode(int nodeInd);
 
-    void drawGraph(); //TODO: delete from prod
-
 private:
     Graph g;
     TreeType treeType;
@@ -64,8 +62,7 @@ private:
     json parsedJson;
     std::deque<int> infectionQueue;
 
-    bool notTerminated;
-    void terminationCheck();
+    bool notTerminated();
     const std::deque<int> &getInfectionQueue() const;
     void jsonOutput();
     void addParsedAgents();

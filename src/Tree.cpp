@@ -24,7 +24,6 @@ Tree& Tree::operator=(const Tree &other) {
         return *this;
     clear();
     node=other.node;
-    children.clear();
     copyChildren(other);
     return *this;
 }
@@ -33,7 +32,6 @@ Tree& Tree::operator=(const Tree &other) {
 Tree& Tree::operator=(Tree &&other) { //why const?
     if (&other != this){
         clear();
-        children.clear();
         node = other.node;
         moveChildren(other);
     }
@@ -42,23 +40,23 @@ Tree& Tree::operator=(Tree &&other) { //why const?
 
 //destructor
 void Tree::clear(){
-    for(int i=0;i<children.size(); i++){
+    for(int i=0;i< (int)children.size(); i++) {
         if (children[i])
-        delete(children[i]);//deep child deletion
+            delete (children[i]);//deep child deletion
     }
     children.clear();
 }
 
 void Tree::copyChildren(const Tree &other){
-    for (int i = 0; i<other.children.size(); i++){
-          addChild(*other.getChildren()[i]);
+    for (int i = 0; i<(int)other.children.size(); i++) {
+        addChild(*other.getChildren()[i]);
     }
 }
 
 // copy the pointers of the children from other to this children vector
 // used in move constructor and move assign
 void Tree::moveChildren(Tree &other) {
-    for (int i=0; i < other.children.size(); i++){
+    for (int i=0; i < (int)other.children.size(); i++){
         children.push_back(other.children[i]);
     }
     other.children.clear();
@@ -67,7 +65,6 @@ void Tree::moveChildren(Tree &other) {
 Tree::~Tree(){
     clear();
 }
-
 
 // getters
 
@@ -113,7 +110,7 @@ Tree* Tree::findLeftChild(const std::vector<Tree*> &children) {
     int leftNode = children[0]->getNode();
     Tree* leftChild = children[0];
     // go through all the children and find the node with the min root node value
-    for (int i = 1; i < children.size(); i++) {
+    for (int i = 1; i < (int)children.size(); i++) {
         int node = children[i]->getNode();
         if (node < leftNode){
             leftChild = children[i];
@@ -125,9 +122,7 @@ Tree* Tree::findLeftChild(const std::vector<Tree*> &children) {
 // Cycle Tree
 CycleTree::CycleTree(int rootLabel, int currCycle) : Tree(rootLabel), currCycle(currCycle){}
 
-CycleTree::CycleTree(const CycleTree &other): Tree(other) {
-    currCycle = other.getCurrCycle();
-}
+CycleTree::CycleTree(const CycleTree &other): Tree(other), currCycle(other.getCurrCycle()) {}
 
 CycleTree& CycleTree::operator=(const CycleTree &other) {
     Tree::operator=(other);
@@ -200,16 +195,15 @@ void MaxRankTree::findMaxRank(int* currMax, int* currMaxDepth , int depth, std::
         else if (depth==*currMaxDepth) //rank and depth equal
             nodes->push_back(this);
     }
-    for(int i=0; i<getChildren().size(); i++) {
-        MaxRankTree* tree = (MaxRankTree*)(getChildren()[i]);
-        tree->findMaxRank(currMax, currMaxDepth, depth+1, nodes); //check children for candidates
+    for(int i=0; i<(int)getChildren().size(); i++) {
+        MaxRankTree *tree = (MaxRankTree *) (getChildren()[i]);
+        tree->findMaxRank(currMax, currMaxDepth, depth + 1, nodes); //check children for candidates
     }
 }
 
 //clone
 Tree* MaxRankTree::clone() const {
-    MaxRankTree* clone = new MaxRankTree(*this);
-    return clone;
+    return new MaxRankTree(*this);
 }
 
 
