@@ -217,7 +217,8 @@ void Session::addParsedAgents() {
 
 void Session::initGraph() {
     vector<vector<int>> matrix=parsedJson["graph"];
-    setGraph(new Graph(matrix));
+    Graph tempG(matrix);
+    setGraph(&tempG);
 }
 
 void Session::jsonOutput() {
