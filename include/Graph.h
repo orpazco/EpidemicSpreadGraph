@@ -31,6 +31,8 @@ public:
     Graph(Graph&& other);
     //move assignment op
     Graph& operator=(Graph&& other);
+    //destructor
+    virtual ~Graph();
 
 private:
     std::vector<std::vector<int>> edges;

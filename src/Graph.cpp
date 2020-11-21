@@ -34,6 +34,9 @@ Graph& Graph::operator=(Graph &&other) {
     return *this;
 }
 
+//destructor
+Graph::~Graph() {}
+
 Graph* Graph::clone() const {
     return new Graph(*this);
 }

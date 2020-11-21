@@ -5,8 +5,7 @@
 
 using namespace std;
 
-
-Session::Session(const std::string &path): g({}), treeType(), agents({}), cycle(0), parsedJson({}), infectionQueue({}) {
+Session::Session(const std::string &path): g({}), treeType(), agents({}), cycle(0), parsedJson(), infectionQueue(){
     jsonInit(path); // initializes config Json
     initGraph(); // inits graph according to config
     addParsedAgents(); // adds agents from the config
