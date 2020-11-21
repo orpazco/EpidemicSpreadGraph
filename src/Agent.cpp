@@ -1,7 +1,6 @@
 #include "../include/Agent.h"
 
 // Contact Tracer
-
 ContactTracer::ContactTracer() {}
 
 // destructor
@@ -16,6 +15,7 @@ void ContactTracer::act(Session &session) {
         Tree* tree = session.BFS(session, session.dequeueInfected()); // create a bfs tree
         int toIsolate = tree->traceTree(); // get the node to isolate
         session.isolateNode(toIsolate); // isolate the node
+        delete tree;
     }
 }
 

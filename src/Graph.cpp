@@ -2,7 +2,7 @@
 #include "../include/Graph.h"
 using namespace std;
 // ctor
-Graph::Graph(vector<vector<int>> matrix): edges(std::move(matrix)), infectedNodesVector({}), spreadNodesVector({}){
+Graph::Graph(vector<vector<int>> matrix): edges(std::move(matrix)), infectedNodesVector(), spreadNodesVector(){
     infectedNodesVector.resize(edges.size());
     spreadNodesVector.resize(edges.size());
 }
@@ -13,8 +13,7 @@ Graph::Graph(const Graph &other)
 
 // move ctor
 Graph::Graph(Graph &&other)
-        :edges(other.edges), infectedNodesVector(other.infectedNodesVector), spreadNodesVector(other.spreadNodesVector)  {
-}
+        :edges(other.edges), infectedNodesVector(other.infectedNodesVector), spreadNodesVector(other.spreadNodesVector){}
 
 // assignment op
 Graph& Graph::operator=(const Graph &other) {
@@ -34,9 +33,8 @@ Graph& Graph::operator=(Graph &&other) {
     return *this;
 }
 
-Graph* Graph::clone() const {
-    return new Graph(*this);
-}
+//destructor
+Graph::~Graph() {}
 
 void Graph::infectNode(int nodeInd) {
     infectedNodesVector[nodeInd] = true;
