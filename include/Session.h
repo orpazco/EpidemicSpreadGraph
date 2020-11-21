@@ -19,7 +19,7 @@ enum TreeType{
 class Session{
 public:
     //Ctor
-    Session(const std::string& path); // parse the json file, init graph, tree type and agents list
+    Session(const std::string& path);
     // destructor
     virtual ~Session();
     void clear();
@@ -70,7 +70,6 @@ private:
     void initGraph();
     void jsonInit(const std::string &path);
     void copyAgents(const Session &other);
-    void moveAgents(Session&& other);
 };
 
 #endif

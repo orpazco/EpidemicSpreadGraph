@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Session::Session(const std::string &path): g({}), treeType(), agents({}), cycle(0), parsedJson(), infectionQueue(){
+Session::Session(const std::string &path): g({}), treeType(), agents(), cycle(0), parsedJson(), infectionQueue(){
     jsonInit(path); // initializes config Json
     initGraph(); // inits graph according to config
     addParsedAgents(); // adds agents from the config
@@ -30,13 +30,9 @@ void Session::clear(){
 }
 
 // copy ctor
-Session::Session(const Session& other): g({}), treeType(other.treeType), agents({}), cycle(other.cycle),
+Session::Session(const Session& other): g(other.g), treeType(other.treeType), agents(), cycle(other.cycle),
                                         parsedJson(other.parsedJson),infectionQueue(other.infectionQueue) {
-    Graph *g1 = other.g.clone();
-    g = *(g1);
-    delete g1;
     copyAgents(other);
-    parsedJson = other.parsedJson;
 }
 
 // assignment
@@ -54,7 +50,7 @@ Session& Session::operator=(const Session &other) {
 }
 
 // move ctor
-Session::Session(Session&& other): g(other.g), treeType(other.treeType), agents({}), cycle(other.cycle),
+Session::Session(Session&& other): g(other.g), treeType(other.treeType), agents(), cycle(other.cycle),
                                 parsedJson(other.parsedJson), infectionQueue(other.infectionQueue){
     agents = std::move(other.agents);
 }
@@ -140,10 +136,7 @@ void Session::addAgent(Agent* agent) {
 }
 
 void Session::setGraph(const Graph &graph) {
-    // clone graph
-    Graph* newGraph = graph.clone();
-    g = *newGraph;
-    delete newGraph;
+    g = graph;
 }
 
 void Session::setGraph(Graph* graph) {
