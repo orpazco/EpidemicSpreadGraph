@@ -24,7 +24,6 @@ Tree& Tree::operator=(const Tree &other) {
         return *this;
     clear();
     node=other.node;
-    children.clear();
     copyChildren(other);
     return *this;
 }
@@ -33,7 +32,6 @@ Tree& Tree::operator=(const Tree &other) {
 Tree& Tree::operator=(Tree &&other) { //why const?
     if (&other != this){
         clear();
-        children.clear();
         node = other.node;
         moveChildren(other);
     }
@@ -67,7 +65,6 @@ void Tree::moveChildren(Tree &other) {
 Tree::~Tree(){
     clear();
 }
-
 
 // getters
 
@@ -206,8 +203,7 @@ void MaxRankTree::findMaxRank(int* currMax, int* currMaxDepth , int depth, std::
 
 //clone
 Tree* MaxRankTree::clone() const {
-    MaxRankTree* clone = new MaxRankTree(*this);
-    return clone;
+    return new MaxRankTree(*this);
 }
 
 

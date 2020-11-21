@@ -33,7 +33,9 @@ void Session::clear(){
 // copy ctor
 Session::Session(const Session& other): g({}), treeType(other.treeType), agents({}), cycle(other.cycle),
                                         parsedJson(other.parsedJson),infectionQueue(other.infectionQueue) {
-    g = (*(other.g.clone()));
+    Graph *g1 = other.g.clone();
+    g = *(g1);
+    delete g1;
     copyAgents(other);
     parsedJson = other.parsedJson;
 }
@@ -142,6 +144,7 @@ void Session::setGraph(const Graph &graph) {
     // clone graph
     Graph* newGraph = graph.clone();
     g = *newGraph;
+    delete newGraph;
 }
 
 void Session::setGraph(Graph* graph) {
@@ -198,8 +201,7 @@ void Session::setTreeType(TreeType type) {
 
 void Session::jsonInit(const string &path) {
     std::ifstream input(path);//gets the json config path and serializes it to input as a string
-    input >> parsedJson; // initialize the json with string stream (convention and not choice)
-
+    input >> parsedJson; // initialize the json with string stream
 }
 
 void Session::setParsedTreeType() {
