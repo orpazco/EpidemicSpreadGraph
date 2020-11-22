@@ -3,7 +3,6 @@
 
 #include <vector>
 #include "Tree.h"
-//#include "Session.h"
 
 class Graph{
 public:
@@ -18,7 +17,6 @@ public:
     bool isInfected(int nodeInd) const;
     bool isSpreadTo(int nodeInd) const;
 
-    Graph* clone() const;
     const std::vector<std::vector<int>> &getEdges() const;
     int getLeftChildNotInf(int nodeInd);
     void isolateNode(int node);
@@ -31,6 +29,8 @@ public:
     Graph(Graph&& other);
     //move assignment op
     Graph& operator=(Graph&& other);
+    //destructor
+    virtual ~Graph();
 
 private:
     std::vector<std::vector<int>> edges;
